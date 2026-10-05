@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Excluir la base de datos interna de Room del respaldo en la nube por seguridad -->
+    <exclude domain="database" path="parkinson_database.db" />
+    <exclude domain="sharedpref" path="." />
+</full-backup-content>
+
+    <!-- Estas reglas son para cumplir con el local first -->
