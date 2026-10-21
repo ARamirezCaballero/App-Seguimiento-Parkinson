@@ -6,9 +6,12 @@ import androidx.room.PrimaryKey
 data class PautaMedicacionEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+    val pacienteId: Long,
     val medicacionId: Long,
     val horaProgramada: Int,
     val cantidad: Double,
+    val fechaInicio: String,
+    val fechaFin: String,
     val activa: Boolean
 ) {
     fun calcularProximaToma(): String {
