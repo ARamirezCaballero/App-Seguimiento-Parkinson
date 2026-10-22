@@ -1,6 +1,8 @@
 package com.example.demo.data.local.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.example.demo.data.local.db.daos.MedicacionDao
 import com.example.demo.data.local.db.daos.PacienteDao
 import com.example.demo.data.local.db.daos.RegistroActividadDao
@@ -8,6 +10,8 @@ import com.example.demo.data.local.db.daos.RegistroEstadoMotorDao
 import com.example.demo.data.local.db.daos.RegistroSintomaDao
 import com.example.demo.data.local.db.daos.RegistroSuenoDao
 import com.example.demo.data.local.db.daos.CardiacaDao
+import com.example.demo.data.local.db.daos.PautaMedicacionDao
+import com.example.demo.data.local.db.daos.RegistroMedicacionDao
 import com.example.demo.data.local.entidades.MedicacionEntity
 import com.example.demo.data.local.entidades.PacienteEntity
 import com.example.demo.data.local.entidades.PautaMedicacionEntity
@@ -36,8 +40,10 @@ import com.example.demo.data.local.entidades.FrecuenciaCardiacaEntity
         RegistroActividadEntity::class
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
+
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun pacienteDao(): PacienteDao
@@ -46,7 +52,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun registroEstadoMotorDao(): RegistroEstadoMotorDao
     abstract fun registroSuenoDao(): RegistroSuenoDao
     abstract fun registroActividadDao(): RegistroActividadDao
-
+    abstract fun registroMedicacionDao(): RegistroMedicacionDao
+    abstract fun pautaMedicacionDao(): PautaMedicacionDao
     abstract fun cardiacaDao(): CardiacaDao
     companion object {
         const val NAME = "parkinson_database.db"

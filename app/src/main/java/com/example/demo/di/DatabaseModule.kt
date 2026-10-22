@@ -7,8 +7,10 @@ import com.example.demo.data.local.db.AppDatabase
 import com.example.demo.data.local.db.daos.CardiacaDao
 import com.example.demo.data.local.db.daos.MedicacionDao
 import com.example.demo.data.local.db.daos.PacienteDao
+import com.example.demo.data.local.db.daos.PautaMedicacionDao
 import com.example.demo.data.local.db.daos.RegistroActividadDao
 import com.example.demo.data.local.db.daos.RegistroEstadoMotorDao
+import com.example.demo.data.local.db.daos.RegistroMedicacionDao
 import com.example.demo.data.local.db.daos.RegistroSintomaDao
 import com.example.demo.data.local.db.daos.RegistroSuenoDao
 import dagger.Module
@@ -70,6 +72,14 @@ object DatabaseModule {
     @Provides
     fun provideRegistroActividadDao(database: AppDatabase): RegistroActividadDao =
         database.registroActividadDao()
+
+    @Provides
+    fun provideRegistroMedicacionDao(database: AppDatabase): RegistroMedicacionDao =
+        database.registroMedicacionDao()
+
+    @Provides
+    fun providePautaMedicacionDao(database: AppDatabase): PautaMedicacionDao =
+        database.pautaMedicacionDao()
 
     @Provides
     fun provideCardiacaDao(database: AppDatabase): CardiacaDao =
