@@ -1,6 +1,7 @@
 package com.example.demo.data.local.entidades
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.demo.data.local.enums.EstadoMotor
 @Entity(tableName ="registros_estado_motor")
 data class RegistroEstadoMotorEntity(
     @PrimaryKey(autoGenerate = true)
@@ -10,9 +11,6 @@ data class RegistroEstadoMotorEntity(
     val fechaHora: Long,
     val observacion: String
 ) {
-    enum class EstadoMotor {
-        //enums
-    }
     fun registrarEstadoMotor() {
         // Lógica para registrar el estado del motor
     }

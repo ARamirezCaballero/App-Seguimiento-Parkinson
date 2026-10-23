@@ -43,6 +43,7 @@ import com.example.demo.data.local.entidades.FrecuenciaCardiacaEntity
     exportSchema = true
 )
 
+//Tiene TypeConvertes porque algunas entidades tienen enums
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

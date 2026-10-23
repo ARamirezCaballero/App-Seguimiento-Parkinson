@@ -1,6 +1,8 @@
 package com.example.demo.data.local.entidades
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.demo.data.local.enums.EstadoMedicacion
+
 @Entity(tableName = "registros_medicaciones")
 data class RegistroMedicacionEntity(
     @PrimaryKey(autoGenerate = true)
@@ -12,12 +14,6 @@ data class RegistroMedicacionEntity(
     val estado: EstadoMedicacion,
     val cantidad: Double
 ) {
-    enum class EstadoMedicacion {
-        PENDIENTE,
-        TOMADA,
-        NO_TOMADA
-    }
-
     fun registrarToma() {
         // Lógica para registrar la toma de la medicina
     }

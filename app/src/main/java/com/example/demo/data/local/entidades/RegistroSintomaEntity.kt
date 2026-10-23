@@ -1,6 +1,7 @@
 package com.example.demo.data.local.entidades
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.demo.data.local.enums.TipoSintoma
 @Entity(tableName = "registros_sintomas")
 data class RegistroSintomaEntity(
     @PrimaryKey(autoGenerate = true)
@@ -10,10 +11,6 @@ data class RegistroSintomaEntity(
     val severidad: Int,
     val fechaHora: Long
 ) {
-    enum class TipoSintoma{
-        //enums
-    }
-
     fun registrarSintoma() {
         // Lógica para registrar el sintoma
     }
