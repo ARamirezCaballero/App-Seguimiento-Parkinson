@@ -14,7 +14,7 @@ hilt = "2.60.1"
 hiltNavigationCompose = "1.4.0"
 sqlcipher = "4.19.1"
 sqliteKtx = "2.4.0"
-room = "2.6.1"
+room = "2.7.2"
 healthConnect = "1.1.0"
 ycharts = "2.1.0"
 

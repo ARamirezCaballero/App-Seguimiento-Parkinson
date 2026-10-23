@@ -1,40 +1,40 @@
 package com.example.demo.data.local.db
 
 import androidx.room.TypeConverter
-import com.example.demo.data.local.entidades.RegistroEstadoMotorEntity
-import com.example.demo.data.local.entidades.RegistroMedicacionEntity
-import com.example.demo.data.local.entidades.RegistroSintomaEntity
+import com.example.demo.data.local.enums.EstadoMedicacion
+import com.example.demo.data.local.enums.EstadoMotor
+import com.example.demo.data.local.enums.TipoSintoma
 
 class Converters {
 
     @TypeConverter
-    fun fromEstadoMotor(value: RegistroEstadoMotorEntity.EstadoMotor): String {
+    fun fromEstadoMotor(value: EstadoMotor): String {
         return value.name
     }
 
     @TypeConverter
-    fun toEstadoMotor(value: String): RegistroEstadoMotorEntity.EstadoMotor {
-        return RegistroEstadoMotorEntity.EstadoMotor.valueOf(value)
+    fun toEstadoMotor(value: String): EstadoMotor {
+        return EstadoMotor.valueOf(value)
     }
 
     @TypeConverter
-    fun fromEstadoMedicacion(value: RegistroMedicacionEntity.EstadoMedicacion): String {
+    fun fromEstadoMedicacion(value: EstadoMedicacion): String {
         return value.name
     }
 
     @TypeConverter
-    fun toEstadoMedicacion(value: String): RegistroMedicacionEntity.EstadoMedicacion {
-        return RegistroMedicacionEntity.EstadoMedicacion.valueOf(value)
+    fun toEstadoMedicacion(value: String): EstadoMedicacion {
+        return EstadoMedicacion.valueOf(value)
     }
 
     @TypeConverter
-    fun fromTipoSintoma(value: RegistroSintomaEntity.TipoSintoma): String {
+    fun fromTipoSintoma(value: TipoSintoma): String {
         return value.name
     }
 
     @TypeConverter
-    fun toTipoSintoma(value: String): RegistroSintomaEntity.TipoSintoma {
-        return RegistroSintomaEntity.TipoSintoma.valueOf(value)
+    fun toTipoSintoma(value: String): TipoSintoma {
+        return TipoSintoma.valueOf(value)
     }
 
 }

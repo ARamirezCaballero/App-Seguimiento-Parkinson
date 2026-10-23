@@ -16,8 +16,4 @@ interface RegistroActividadDao {
     @Query("SELECT * FROM registros_actividad WHERE pacienteId = :pacienteId AND fechaHora >= :fechaInicio AND fechaHora < :fechaFin ORDER BY fechaHora ASC")
     suspend fun consultarActividadesPorPeriodo(pacienteId: Long, fechaInicio: Long, fechaFin: Long): List<RegistroActividadEntity>
 
-    //Consultar actividades por tipo
-    @Query("SELECT * FROM registros_actividad WHERE pacienteId = :pacienteId AND tipo = :tipo ORDER BY fechaHora ASC")
-    suspend fun consultarActividadesPorTipo(pacienteId: Long, tipo: String): List<RegistroActividadEntity>
-
 }

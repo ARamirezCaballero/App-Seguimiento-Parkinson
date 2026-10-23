@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("androidx.room")
 }
 
 android {
@@ -92,4 +93,8 @@ dependencies {
     //YCharts
     implementation(libs.ycharts)
 
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
