@@ -1,6 +1,7 @@
 package com.example.demo.data.local.db.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -20,4 +21,6 @@ interface PacienteDao {
     @Update
     suspend fun actualizarPaciente(paciente: PacienteEntity)
 
+    @Delete
+    suspend fun eliminarPaciente(paciente: PacienteEntity)
 }

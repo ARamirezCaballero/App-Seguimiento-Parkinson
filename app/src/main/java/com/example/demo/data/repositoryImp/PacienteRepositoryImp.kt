@@ -1,4 +1,10 @@
 package com.example.demo.data.repositoryImp
 
-class PacienteRepositoryImp {
+interface PacienteRepositoryImp {
+
+    //Obtener Paciente
+
+    //Guardar Pacient
+
+    //Actualizar Paciente
 }
