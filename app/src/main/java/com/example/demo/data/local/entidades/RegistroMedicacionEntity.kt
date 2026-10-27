@@ -9,8 +9,8 @@ data class RegistroMedicacionEntity(
     val id: Long = 0,
     val pacienteId: Long,
     val pautaId: Long,
-    val fechaHoraReal: Long,
-    val fechaHoraProgramada: Long,
+    val fechaHoraReal: String,
+    val fechaHoraProgramada: String,
     val estado: EstadoMedicacion,
     val cantidad: Double
 ) {

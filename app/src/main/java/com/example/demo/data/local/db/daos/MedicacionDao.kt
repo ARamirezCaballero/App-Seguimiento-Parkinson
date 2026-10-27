@@ -17,6 +17,11 @@ interface MedicacionDao {
     @Query("SELECT * FROM medicaciones WHERE pacienteId = :pacienteId")
     suspend fun consultarMedicamentos(pacienteId: Long): List<MedicacionEntity>
 
+    //Consultar un medicamento por su id
+    @Query("SELECT * FROM medicaciones WHERE id = :id")
+    suspend fun obtenerMedicacionPorId(id: Long): MedicacionEntity?
+
+
     //Consultar los medicamentos activos del paciente
     @Query("SELECT * FROM medicaciones WHERE pacienteId = :pacienteId AND fechaFin >= :fechaActual")
     suspend fun consultarMedicamentosActivos(pacienteId: Long, fechaActual: String): List<MedicacionEntity>

@@ -1,4 +1,4 @@
 package com.example.demo.dominio.model
 
-class EstadoMotor {
+class RegistroEstadoMotor {
 }

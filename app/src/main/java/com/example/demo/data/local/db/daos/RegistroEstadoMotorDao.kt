@@ -11,6 +11,10 @@ interface RegistroEstadoMotorDao {
     @Insert
     suspend fun registrarEstadoMotor(estadoMotor: RegistroEstadoMotorEntity): Long
 
+    //Obtener un registro por id
+    @Query("SELECT * FROM registros_estado_motor WHERE id = :id")
+    suspend fun obtenerEstadoMotorPorId(id: Long): RegistroEstadoMotorEntity?
+
     //Consultar intervalos por periodo
     @Query("SELECT * FROM registros_estado_motor WHERE pacienteId = :pacienteId AND fechaHora >= :fechaInicio AND fechaHora < :fechaFin ORDER BY fechaHora ASC")
     suspend fun consultarIntervalosPorPeriodo(pacienteId: Long, fechaInicio: Long, fechaFin: Long): List<RegistroEstadoMotorEntity>
@@ -18,5 +22,4 @@ interface RegistroEstadoMotorDao {
     //Recuperar registros para calcular estadisticas
     @Query("SELECT * FROM registros_estado_motor WHERE pacienteId = :pacienteId AND fechaHora >= :fechaInicio AND fechaHora < :fechaFin ORDER BY fechaHora ASC")
     suspend fun recuperarRegistrosParaEstadisticas(pacienteId: Long, fechaInicio: Long, fechaFin: Long): List<RegistroEstadoMotorEntity>
-
 }
