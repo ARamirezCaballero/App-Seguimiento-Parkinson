@@ -1,34 +1,34 @@
 package com.example.demo.dominio.repository
 
-import com.example.demo.data.local.entidades.FrecuenciaCardiacaEntity
-import com.example.demo.data.local.entidades.RegistroActividadEntity
-import com.example.demo.data.local.entidades.RegistroSuenoEntity
+import com.example.demo.dominio.model.FrecuenciaCardiaca
+import com.example.demo.dominio.model.RegistroActividad
+import com.example.demo.dominio.model.RegistroSueno
 
 interface HealthDataRepository {
 
     suspend fun sincronizarDatosHealthConnect(inicio: Long, fin: Long)
 
-    suspend fun guardarDatosActividadFisica(datos: List<RegistroActividadEntity>)
+    suspend fun guardarDatosActividadFisica(datos: List<RegistroActividad>)
 
-    suspend fun guardarDatosSueno(datos: List<RegistroSuenoEntity>)
+    suspend fun guardarDatosSueno(datos: List<RegistroSueno>)
 
-    suspend fun guardarDatosFrecuenciaCardiaca(datos: List<FrecuenciaCardiacaEntity>)
+    suspend fun guardarDatosFrecuenciaCardiaca(datos: List<FrecuenciaCardiaca>)
 
     suspend fun obtenerDatosActividadFisica(
         pacienteId: Long,
         inicio: Long,
         fin: Long
-    ): List<RegistroActividadEntity>
+    ): List<RegistroActividad>
 
     suspend fun obtenerDatosSueno(
         pacienteId: Long,
         inicio: Long,
         fin: Long
-    ): List<RegistroSuenoEntity>
+    ): List<RegistroSueno>
 
     suspend fun obtenerDatosFrecuenciaCardiaca(
         pacienteId: Long,
         inicio: Long,
         fin: Long
-    ): List<FrecuenciaCardiacaEntity>
+    ): List<FrecuenciaCardiaca>
 }

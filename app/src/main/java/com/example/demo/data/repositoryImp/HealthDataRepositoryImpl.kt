@@ -4,9 +4,11 @@ import com.example.demo.data.health.HealthConnectDataSource
 import com.example.demo.data.local.db.daos.CardiacaDao
 import com.example.demo.data.local.db.daos.RegistroActividadDao
 import com.example.demo.data.local.db.daos.RegistroSuenoDao
-import com.example.demo.data.local.entidades.FrecuenciaCardiacaEntity
-import com.example.demo.data.local.entidades.RegistroActividadEntity
-import com.example.demo.data.local.entidades.RegistroSuenoEntity
+import com.example.demo.data.mappers.toDomain
+import com.example.demo.data.mappers.toEntity
+import com.example.demo.dominio.model.FrecuenciaCardiaca
+import com.example.demo.dominio.model.RegistroActividad
+import com.example.demo.dominio.model.RegistroSueno
 import com.example.demo.dominio.repository.HealthDataRepository
 import javax.inject.Inject
 
@@ -23,16 +25,16 @@ class HealthDataRepositoryImpl @Inject constructor(
     }
 
     //Insertar datos nuevos o actualizar existentes
-    override suspend fun guardarDatosActividadFisica(datos: List<RegistroActividadEntity>) {
-        registroActividadDao.guardarDatosActividadFisica(datos)
+    override suspend fun guardarDatosActividadFisica(datos: List<RegistroActividad>) {
+        registroActividadDao.guardarDatosActividadFisica(datos.map { it.toEntity() })
     }
 
-    override suspend fun guardarDatosSueno(datos: List<RegistroSuenoEntity>) {
-        registroSuenoDao.guardarDatosSueno(datos)
+    override suspend fun guardarDatosSueno(datos: List<RegistroSueno>) {
+        registroSuenoDao.guardarDatosSueno(datos.map { it.toEntity() })
     }
 
-    override suspend fun guardarDatosFrecuenciaCardiaca(datos: List<FrecuenciaCardiacaEntity>) {
-        frecuenciaCardiacaDao.guardarDatosFrecuenciaCardiaca(datos)
+    override suspend fun guardarDatosFrecuenciaCardiaca(datos: List<FrecuenciaCardiaca>) {
+        frecuenciaCardiacaDao.guardarDatosFrecuenciaCardiaca(datos.map { it.toEntity() })
     }
 
     //Consultar datos actividad fisica
@@ -40,8 +42,8 @@ class HealthDataRepositoryImpl @Inject constructor(
         pacienteId: Long,
         inicio: Long,
         fin: Long
-    ): List<RegistroActividadEntity> {
-        return registroActividadDao.consultarActividadesPorPeriodo(pacienteId, inicio, fin)
+    ): List<RegistroActividad> {
+        return registroActividadDao.consultarActividadesPorPeriodo(pacienteId, inicio, fin).map { it.toDomain() }
     }
 
     //Consultar datos de sueño
@@ -49,8 +51,8 @@ class HealthDataRepositoryImpl @Inject constructor(
         pacienteId: Long,
         inicio: Long,
         fin: Long
-    ): List<RegistroSuenoEntity> {
-        return registroSuenoDao.consultarSesionesPorPeriodo(pacienteId, inicio, fin)
+    ): List<RegistroSueno> {
+        return registroSuenoDao.consultarSesionesPorPeriodo(pacienteId, inicio, fin).map { it.toDomain() }
     }
 
     //Consultar datos frecuencia cardiaca
@@ -58,7 +60,7 @@ class HealthDataRepositoryImpl @Inject constructor(
         pacienteId: Long,
         inicio: Long,
         fin: Long
-    ): List<FrecuenciaCardiacaEntity> {
-        return frecuenciaCardiacaDao.consultarSeriesTemporales(pacienteId, inicio, fin)
+    ): List<FrecuenciaCardiaca> {
+        return frecuenciaCardiacaDao.consultarSeriesTemporales(pacienteId, inicio, fin).map { it.toDomain() }
     }
 }
