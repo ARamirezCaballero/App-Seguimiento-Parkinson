@@ -1,6 +1,7 @@
 package com.example.demo.data.local.db.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -28,4 +29,12 @@ interface RegistroSintomaDao {
     //Actualizar un síntoma existente
     @Update
     suspend fun actualizarSintoma(sintoma: RegistroSintomaEntity)
+
+    //Eliminar un síntoma por objeto
+    @Delete
+    suspend fun eliminarSintoma(sintoma: RegistroSintomaEntity)
+
+    //Eliminar un síntoma por id
+    @Query("DELETE FROM registros_sintomas WHERE id = :id")
+    suspend fun eliminarSintomaPorId(id: Long)
 }
