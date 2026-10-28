@@ -1,6 +1,28 @@
 package com.example.demo.dependencias
 
-// Provee los clientes de Health Connect y Health Services
+//Provee los clientes de Health connect
+import android.content.Context
+import androidx.health.connect.client.HealthConnectClient
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-class HealthModule {
+@Module
+@InstallIn(SingletonComponent::class)
+object HealthModule {
+
+    @Provides
+    @Singleton
+    fun provideHealthConnectClient(
+        @ApplicationContext context: Context
+    ): HealthConnectClient? {
+        return if (HealthConnectClient.getSdkStatus(context) == HealthConnectClient.SDK_AVAILABLE) {
+            HealthConnectClient.getOrCreate(context)
+        } else {
+            null
+        }
+    }
 }

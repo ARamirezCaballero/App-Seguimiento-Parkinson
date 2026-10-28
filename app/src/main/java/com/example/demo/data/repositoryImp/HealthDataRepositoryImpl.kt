@@ -19,9 +19,18 @@ class HealthDataRepositoryImpl @Inject constructor(
     private val healthConnectDataSource: HealthConnectDataSource
 ) : HealthDataRepository {
 
-    //Sincronizae datos de health connect coordinando persistencia de resultados
-    override suspend fun sincronizarDatosHealthConnect(inicio: Long, fin: Long) {
-        healthConnectDataSource.sincronizarDatos(inicio, fin)
+    //Sincronizar datos de health connect coordinando persistencia de resultados
+    override suspend fun sincronizarDatosHealthConnect(pacienteId: Long, inicio: Long, fin: Long) {
+        val resultado = healthConnectDataSource.sincronizarDatos(pacienteId, inicio, fin)
+        if (resultado.actividades.isNotEmpty()) {
+            registroActividadDao.guardarDatosActividadFisica(resultado.actividades)
+        }
+        if (resultado.sesionesSueno.isNotEmpty()) {
+            registroSuenoDao.guardarDatosSueno(resultado.sesionesSueno)
+        }
+        if (resultado.frecuenciasCardiacas.isNotEmpty()) {
+            frecuenciaCardiacaDao.guardarDatosFrecuenciaCardiaca(resultado.frecuenciasCardiacas)
+        }
     }
 
     //Insertar datos nuevos o actualizar existentes

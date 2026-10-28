@@ -6,7 +6,7 @@ import com.example.demo.dominio.model.RegistroSueno
 
 interface HealthDataRepository {
 
-    suspend fun sincronizarDatosHealthConnect(inicio: Long, fin: Long)
+    suspend fun sincronizarDatosHealthConnect(pacienteId: Long, inicio: Long, fin: Long)
 
     suspend fun guardarDatosActividadFisica(datos: List<RegistroActividad>)
 

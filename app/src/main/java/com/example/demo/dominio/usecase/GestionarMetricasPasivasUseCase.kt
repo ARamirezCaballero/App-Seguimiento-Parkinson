@@ -38,10 +38,7 @@ class GestionarMetricasPasivasUseCase @Inject constructor(
     }
 
     //Solicitar la actualizacion de los datos desde Health Connect y conservar los registros localmente
-    suspend fun sincronizarDatosHealthConnect(
-        inicio: Long,
-        fin: Long
-    ) {
-        healthDataRepository.sincronizarDatosHealthConnect(inicio, fin)
+    suspend fun sincronizarDatosHealthConnect(pacienteId: Long, inicio: Long, fin: Long) {
+        healthDataRepository.sincronizarDatosHealthConnect(pacienteId, inicio, fin)
     }
 }

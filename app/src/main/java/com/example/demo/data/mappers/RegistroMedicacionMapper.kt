@@ -4,14 +4,14 @@ import com.example.demo.data.local.entidades.RegistroMedicacionEntity
 import com.example.demo.data.local.enums.EstadoMedicacion as EstadoMedicacionData
 import com.example.demo.dominio.model.RegistroMedicacion
 import com.example.demo.dominio.model.enums.EstadoMedicacion as EstadoMedicacionDomain
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 fun RegistroMedicacionEntity.toDomain() = RegistroMedicacion(
     id = id,
     pacienteId = pacienteId,
     pautaId = pautaId,
-    fechaHoraReal = LocalDate.parse(fechaHoraReal),
-    fechaHoraProgramada = LocalDate.parse(fechaHoraProgramada),
+    fechaHoraReal = LocalDateTime.parse(fechaHoraReal),
+    fechaHoraProgramada = LocalDateTime.parse(fechaHoraProgramada),
     estado = EstadoMedicacionDomain.valueOf(estado.name),
     cantidad = cantidad
 )
