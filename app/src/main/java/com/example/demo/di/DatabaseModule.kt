@@ -18,7 +18,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import net.zetetic.database.sqlcipher.SQLiteDatabase
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import javax.inject.Singleton
 
@@ -34,9 +33,9 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context,
-        keyStoreManager: KeyStoreManager
+        keyStoreManager: KeyStoreManager,
     ): AppDatabase {
-
+        System.loadLibrary("sqlcipher")
         val passphrase = keyStoreManager.getOrCreateDatabasePassphrase()
         val factory = SupportOpenHelperFactory(passphrase, null, true)
 

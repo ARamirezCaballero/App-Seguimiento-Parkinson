@@ -99,8 +99,6 @@ class KeyStoreManager @Inject constructor(
         }
 
         return try {
-            generateSecretKey(useStrongBox = true)
-        } catch (_: StrongBoxUnavailableException) {
             generateSecretKey(useStrongBox = false)
         } catch (_: Exception) {
             generateSecretKey(useStrongBox = false)
@@ -154,4 +152,3 @@ class KeyStoreManager @Inject constructor(
         const val PREF_SEALED_PASSPHRASE = "db_passphrase_sealed"
     }
 }
-
