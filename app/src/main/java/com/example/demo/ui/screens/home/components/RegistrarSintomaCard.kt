@@ -32,7 +32,7 @@ fun RegisterSymptomsCard(
     //Fondo color #FC836B con bordes redondeados
     //Icono adentro de portapapeles con termometro y debajo el texto en poppins en blanco semibold
     //todo centrado
-    //Al pulsar navega a RegistroSintomasScreen
+    //Al pulsar navega a TipoSintomaScreen
     Card(
         modifier = modifier
             .aspectRatio(1f)

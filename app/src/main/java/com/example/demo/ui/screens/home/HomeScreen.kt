@@ -31,7 +31,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToPerfil: () -> Unit = {},
-    onNavigateToRegistroSintomas: () -> Unit = {},
+    onNavigateToTipoSintomas: () -> Unit = {},
     onNavigateToRegistroEstadoMotor: () -> Unit = {},
     onNavigateToRegistroToma: () -> Unit = {},
     onNavigateToConfiguracionMedicacion: () -> Unit = {},
@@ -44,7 +44,7 @@ fun HomeScreen(
         uiState = uiState,
         modifier = modifier,
         onNavigateToPerfil = onNavigateToPerfil,
-        onNavigateToRegistroSintomas = onNavigateToRegistroSintomas,
+        onNavigateToTipoSintomas = onNavigateToTipoSintomas,
         onNavigateToRegistroEstadoMotor = onNavigateToRegistroEstadoMotor,
         onNavigateToRegistroToma = onNavigateToRegistroToma,
         onNavigateToConfiguracionMedicacion = onNavigateToConfiguracionMedicacion,
@@ -58,7 +58,7 @@ fun HomeScreenContent(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
     onNavigateToPerfil: () -> Unit = {},
-    onNavigateToRegistroSintomas: () -> Unit = {},
+    onNavigateToTipoSintomas: () -> Unit = {},
     onNavigateToRegistroEstadoMotor: () -> Unit = {},
     onNavigateToRegistroToma: () -> Unit = {},
     onNavigateToConfiguracionMedicacion: () -> Unit = {},
@@ -99,7 +99,7 @@ fun HomeScreenContent(
                 HomeTitle()
 
                 QuickAccessCard(
-                    onRegistrarSintomaClick = onNavigateToRegistroSintomas,
+                    onRegistrarSintomaClick = onNavigateToTipoSintomas,
                     onRegistrarEstadoMotorClick = onNavigateToRegistroEstadoMotor
                 )
 

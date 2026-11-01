@@ -23,7 +23,7 @@ enum class TipoSintoma (
     ),
 
     Freezing(
-        "Congelación de la marcha e inestabilidad postural",
+        "Congelamiento / Freezing",
         "Dificultad repentina para iniciar o continuar la marcha, o para mantener el equilibrio.",
         true
     ),
