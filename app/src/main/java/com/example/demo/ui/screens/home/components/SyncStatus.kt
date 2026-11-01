@@ -47,7 +47,7 @@ fun SyncStatus(
                     .size(20.dp)
             )
             Text(
-                text = if (lastSyncDate != null) "Última sincro: $lastSyncDate" else "Sin datos de sincronización",
+                text = if (lastSyncDate != null) "Última sincronización: $lastSyncDate" else "Sin datos de sincronización",
                 color = Color.Black,
                 fontSize = 14.sp
             )

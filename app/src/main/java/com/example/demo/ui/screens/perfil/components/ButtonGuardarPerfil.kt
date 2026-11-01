@@ -1,41 +1,20 @@
 package com.example.demo.ui.screens.perfil.components
 
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import com.example.demo.ui.components.PrimaryButton
 
-//Texto blanco centrado "GUARDAR PERFIL" en el boton color purpura #7162FB
-//Ancho coompleto del botn con borde redondeados y area tactil minima de 14mm
+// Adapta el botón principal global de ui/components para guardar el perfil
 @Composable
 fun ButtonGuardarPerfil(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    Button(
+    PrimaryButton(
+        text = "GUARDAR PERFIL",
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .defaultMinSize(minHeight = 56.dp),
-        enabled = enabled,
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF7162FB),
-            contentColor = Color.White
-        )
-    ) {
-        Text(
-            text = "GUARDAR PERFIL",
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
-    }
+        modifier = modifier,
+        enabled = enabled
+    )
 }

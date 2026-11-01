@@ -2,8 +2,10 @@ package com.example.demo.ui.screens.home.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,27 +39,33 @@ fun RegisterMotorStateCard(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF7162FB))
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxSize()
+                .padding(12.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.registrar_estado_motor_icon),
-                contentDescription = "Registrar Estado Motor",
-                tint = Color.White,
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
-                    .size(56.dp)
-            )
-            Text(
-                text = "Registrar Estado Motor",
-                color = Color.White,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 15.sp,
-                textAlign = TextAlign.Center
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.registrar_estado_motor_icon),
+                    contentDescription = "Registrar Estado Motor",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .size(52.dp)
+                )
+                Text(
+                    text = "Registrar Estado Motor",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 17.sp,
+                    lineHeight = 21.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }

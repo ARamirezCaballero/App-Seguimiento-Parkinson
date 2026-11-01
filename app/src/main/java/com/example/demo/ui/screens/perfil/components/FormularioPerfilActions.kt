@@ -1,14 +1,10 @@
 package com.example.demo.ui.screens.perfil.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.example.demo.ui.components.FormActionButtons
 
-//Agrupa acciones correspondientes a guardar o cancelar operacion
-//contiene a BotonGuardarPerfil y BotonCancelar
+// Agrupa las acciones del perfil utilizando el componente global reutilizable FormActionButtons
 @Composable
 fun FormularioPerfilActions(
     onGuardarClick: () -> Unit,
@@ -16,17 +12,12 @@ fun FormularioPerfilActions(
     modifier: Modifier = Modifier,
     isSaving: Boolean = false,
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        ButtonGuardarPerfil(
-            onClick = onGuardarClick,
-            enabled = !isSaving
-        )
-        ButtonCancelar(
-            onClick = onCancelarClick,
-            enabled = !isSaving
-        )
-    }
+    FormActionButtons(
+        textoGuardar = "GUARDAR PERFIL",
+        textoCancelar = "CANCELAR",
+        onGuardarClick = onGuardarClick,
+        onCancelarClick = onCancelarClick,
+        modifier = modifier,
+        enabled = !isSaving
+    )
 }
