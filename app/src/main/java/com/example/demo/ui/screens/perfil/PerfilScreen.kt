@@ -10,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,6 +32,13 @@ fun PerfilScreen(
     onCancelar: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // Al guardar exitosamente el perfil, confirma el guardado y vuelve a inicio
+    LaunchedEffect(uiState.mensajeExito) {
+        uiState.mensajeExito?.let {
+            onCancelar()
+        }
+    }
 
     // Estructura de la pantalla Perfil (sin lógica)
     //se compone de ProfileHeader, PatientInformationForm, FormularioPerfilActions y ProfileStatusMessage

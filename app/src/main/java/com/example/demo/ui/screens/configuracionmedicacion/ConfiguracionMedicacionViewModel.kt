@@ -152,9 +152,24 @@ class ConfiguracionMedicacionViewModel @Inject constructor(
 
                 gestionarPautaMedicacionUseCase.crearPauta(pauta)
 
-                // Actualizar el estado segun el resultado de la operacion
+                // Actualizar el estado despejando los campos del formulario para permitir un nuevo registro
                 _uiState.update {
                     it.copy(
+                        nombreMedicacion = "",
+                        principioActivo = "",
+                        dosisGeneral = "",
+                        dosisUnitaria = "",
+                        formaFarmaceutica = "",
+                        fechaInicio = "",
+                        fechaFin = "",
+                        unidadAdministracion = "",
+                        intervaloAdministracion = "",
+                        horaInicio = "",
+                        errorNombreMedicacion = null,
+                        errorFechaInicio = null,
+                        errorFechaFin = null,
+                        errorIntervaloAdministracion = null,
+                        errorHoraInicio = null,
                         isSaving = false,
                         mensajeExito = "Medicación y pauta guardadas correctamente"
                     )

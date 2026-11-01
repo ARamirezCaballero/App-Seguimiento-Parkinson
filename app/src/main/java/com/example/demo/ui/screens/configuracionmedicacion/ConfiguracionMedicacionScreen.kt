@@ -36,7 +36,6 @@ fun ConfiguracionMedicacionScreen(
     LaunchedEffect(uiState.mensajeExito, uiState.mensajeError) {
         uiState.mensajeExito?.let {
             snackbarHostState.showSnackbar(it)
-            onVolverClick()
         }
         uiState.mensajeError?.let {
             snackbarHostState.showSnackbar(it)
