@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.demo.ui.screens.configuracionmedicacion.ConfiguracionMedicacionScreen
 import com.example.demo.ui.screens.evolucion.EvolucionScreen
+import com.example.demo.ui.screens.historial.HistorialScreen
 import com.example.demo.ui.screens.home.HomeScreen
 import com.example.demo.ui.screens.informe.InformeScreen
 import com.example.demo.ui.screens.perfil.PerfilScreen
@@ -35,7 +36,8 @@ fun NavGraph(
                 onNavigateToRegistroToma = { navController.navigate(Screen.RegistroToma.route) },
                 onNavigateToConfiguracionMedicacion = { navController.navigate(Screen.ConfiguracionMedicacion.route) },
                 onNavigateToEvolucion = { navController.navigate(Screen.Evolucion.route) },
-                onNavigateToInforme = { navController.navigate(Screen.Informe.route) }
+                onNavigateToInforme = { navController.navigate(Screen.Informe.route) },
+                onNavigateToHistorial = { navController.navigate(Screen.Historial.route) }
             )
         }
 
@@ -97,6 +99,12 @@ fun NavGraph(
 
         composable(Screen.Informe.route) {
             InformeScreen()
+        }
+
+        composable(Screen.Historial.route) {
+            HistorialScreen(
+                onVolverClick = { navController.popBackStack() }
+            )
         }
     }
 }

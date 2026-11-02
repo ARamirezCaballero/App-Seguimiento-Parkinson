@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.demo.ui.components.SecondaryButton
 import com.example.demo.ui.screens.home.components.HomeHeader
 import com.example.demo.ui.screens.home.components.HomeNavigationSection
 import com.example.demo.ui.screens.home.components.HomeTitle
@@ -37,6 +38,7 @@ fun HomeScreen(
     onNavigateToConfiguracionMedicacion: () -> Unit = {},
     onNavigateToEvolucion: () -> Unit = {},
     onNavigateToInforme: () -> Unit = {},
+    onNavigateToHistorial: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -49,7 +51,8 @@ fun HomeScreen(
         onNavigateToRegistroToma = onNavigateToRegistroToma,
         onNavigateToConfiguracionMedicacion = onNavigateToConfiguracionMedicacion,
         onNavigateToEvolucion = onNavigateToEvolucion,
-        onNavigateToInforme = onNavigateToInforme
+        onNavigateToInforme = onNavigateToInforme,
+        onNavigateToHistorial = onNavigateToHistorial
     )
 }
 
@@ -64,6 +67,7 @@ fun HomeScreenContent(
     onNavigateToConfiguracionMedicacion: () -> Unit = {},
     onNavigateToEvolucion: () -> Unit = {},
     onNavigateToInforme: () -> Unit = {},
+    onNavigateToHistorial: () -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -109,6 +113,11 @@ fun HomeScreenContent(
                 )
 
                 SyncStatus(lastSyncDate = uiState.lastSyncDate)
+
+                SecondaryButton(
+                    text = "Ver Historial de Registros",
+                    onClick = onNavigateToHistorial
+                )
             }
         }
     }

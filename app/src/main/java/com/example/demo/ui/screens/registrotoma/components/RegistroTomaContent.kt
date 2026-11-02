@@ -34,46 +34,46 @@ fun RegistroTomaContent(
     onMedicamentoClick: (MedicamentoConPautaItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(
-            text = "Registrar Toma de Medicación",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Default,
-            color = Color(0xFF4C0099),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
+        item {
+            Text(
+                text = "Registrar Toma de Medicación",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Default,
+                color = Color(0xFF4C0099),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(bottom = 4.dp),
+                textAlign = TextAlign.Center
+            )
+        }
 
         if (medicamentos.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(32.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "No hay medicamentos registrados",
-                    color = Color.Gray,
-                    fontSize = 16.sp
-                )
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(medicamentos) { item ->
-                    MedicamentoTarjetaItem(
-                        item = item,
-                        onClick = { onMedicamentoClick(item) }
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No hay medicamentos registrados",
+                        color = Color.Gray,
+                        fontSize = 16.sp
                     )
                 }
+            }
+        } else {
+            items(medicamentos) { item ->
+                MedicamentoTarjetaItem(
+                    item = item,
+                    onClick = { onMedicamentoClick(item) }
+                )
             }
         }
     }

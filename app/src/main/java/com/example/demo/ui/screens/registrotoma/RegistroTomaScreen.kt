@@ -66,17 +66,13 @@ fun RegistroTomaScreen(
                 CircularProgressIndicator(color = Color(0xFF7162FB))
             }
         } else {
-            Column(
+            RegistroTomaContent(
+                medicamentos = uiState.medicamentosConPauta,
+                onMedicamentoClick = viewModel::onMedicamentoSelected,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                RegistroTomaContent(
-                    medicamentos = uiState.medicamentosConPauta,
-                    onMedicamentoClick = viewModel::onMedicamentoSelected
-                )
-            }
+            )
         }
 
         uiState.selectedMedicamento?.let { item ->
