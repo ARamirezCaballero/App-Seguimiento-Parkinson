@@ -19,7 +19,7 @@ interface RegistroMedicacionDao {
 
     //Consultar tomas por periodo
     @Query("SELECT * FROM registros_medicaciones WHERE pacienteId = :pacienteId AND fechaHoraReal >= :fechaInicio AND fechaHoraReal < :fechaFin ORDER BY fechaHoraReal ASC")
-    suspend fun consultarTomasPorPeriodo(pacienteId: Long, fechaInicio: Long, fechaFin: Long): List<RegistroMedicacionEntity>
+    suspend fun consultarTomasPorPeriodo(pacienteId: Long, fechaInicio: String, fechaFin: String): List<RegistroMedicacionEntity>
 
     //Consultar tomas asociadas a una pauta
     @Query("SELECT * FROM registros_medicaciones WHERE pautaId = :pautaId")

@@ -1,7 +1,7 @@
 package com.example.demo.dominio.model
 
 import com.example.demo.dominio.model.enums.EstadoMotor
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class DistribucionEstadoMotor(
     val conteoPorEstado: Map<EstadoMotor, Int> = emptyMap(),
@@ -14,7 +14,7 @@ data class PuntoSintoma(
     val id: Long,
     val tituloSintoma: String,
     val severidad: Int,
-    val fechaHora: LocalDate,
+    val fechaHora: LocalDateTime,
     val esMotor: Boolean
 )
 

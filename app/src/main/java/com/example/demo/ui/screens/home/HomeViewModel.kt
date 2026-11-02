@@ -32,6 +32,7 @@ class HomeViewModel @Inject constructor(
     //Actualizar estado cunado se abre la pantalla ya sea de vuelta o por primera vez
     fun onResume() {
         cargarEstadoInicial()
+        sincronizarHealthConnect()
     }
 
     //Operaciones
@@ -56,6 +57,8 @@ class HomeViewModel @Inject constructor(
                         isSyncing = false
                     )
                 }
+                
+                sincronizarHealthConnect()
             } catch (e: Exception) {
                 //GEstionar los estados de carga y error
                 _uiState.update {

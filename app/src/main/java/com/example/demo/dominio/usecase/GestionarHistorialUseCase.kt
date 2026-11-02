@@ -68,7 +68,7 @@ class GestionarHistorialUseCase @Inject constructor(
                         detalles = sintoma.tipoSintoma.descripcion,
                         categoria = CategoriaHistorial.SINTOMAS,
                         tipoRegistro = TipoRegistroHistorial.SINTOMA,
-                        fechaHora = sintoma.fechaHora.atStartOfDay(),
+                        fechaHora = sintoma.fechaHora,
                         origenDatos = "Registro manual",
                         referenciaId = sintoma.id
                     )
@@ -87,7 +87,7 @@ class GestionarHistorialUseCase @Inject constructor(
                         detalles = estado.observacion.ifBlank { "Sin observaciones" },
                         categoria = CategoriaHistorial.ESTADO_MOTOR,
                         tipoRegistro = TipoRegistroHistorial.ESTADO_MOTOR,
-                        fechaHora = estado.fechaHora.atStartOfDay(),
+                        fechaHora = estado.fechaHora,
                         origenDatos = "Registro manual",
                         referenciaId = estado.id
                     )

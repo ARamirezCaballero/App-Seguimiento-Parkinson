@@ -24,10 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.demo.R
 
-/**
- * Header global reutilizable con botón circular para volver atrás alineado a la izquierda
- * y una línea divisoria horizontal inferior.
- */
+import androidx.compose.foundation.layout.statusBarsPadding
+
+//Header reutilizable
 @Composable
 fun TopBackHeader(
     onBackClick: () -> Unit,
@@ -43,6 +42,7 @@ fun TopBackHeader(
         modifier = modifier
             .fillMaxWidth()
             .background(backgroundColor)
+            .statusBarsPadding()
     ) {
         Box(
             modifier = Modifier

@@ -5,6 +5,8 @@ import com.example.demo.data.mappers.toDomain
 import com.example.demo.data.mappers.toEntity
 import com.example.demo.dominio.model.RegistroMedicacion
 import com.example.demo.dominio.repository.RegistroMedicacionRepository
+import java.time.Instant
+import java.time.ZoneId
 import javax.inject.Inject
 
 class RegistroMedicacionRepositoryImpl @Inject constructor(
@@ -27,7 +29,9 @@ class RegistroMedicacionRepositoryImpl @Inject constructor(
         fechaInicio: Long,
         fechaFin: Long
     ): List<RegistroMedicacion> {
-        return registroMedicacionDao.consultarTomasPorPeriodo(pacienteId, fechaInicio, fechaFin).map { it.toDomain() }
+        val inicioStr = Instant.ofEpochMilli(fechaInicio).atZone(ZoneId.systemDefault()).toLocalDateTime().toString()
+        val finStr = Instant.ofEpochMilli(fechaFin).atZone(ZoneId.systemDefault()).toLocalDateTime().toString()
+        return registroMedicacionDao.consultarTomasPorPeriodo(pacienteId, inicioStr, finStr).map { it.toDomain() }
     }
 
     //Consultar tomas asociadas a una pauta

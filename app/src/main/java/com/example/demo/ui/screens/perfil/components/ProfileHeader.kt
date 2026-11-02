@@ -14,6 +14,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import androidx.compose.foundation.layout.statusBarsPadding
+
 //Titulo PERFIL DEL PACIENTE, centrado y color prupura #4c0099
 //Fondo Blanco
 @Composable
@@ -25,6 +27,7 @@ fun ProfileHeader(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.White)
+            .statusBarsPadding()
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {

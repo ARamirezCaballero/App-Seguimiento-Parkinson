@@ -12,7 +12,7 @@ fun RegistroSintomaEntity.toDomain() = RegistroSintoma(
     pacienteId = pacienteId,
     tipoSintoma = TipoSintomaDomain.valueOf(tipoSintoma.name),
     severidad = severidad,
-    fechaHora = Instant.ofEpochMilli(fechaHora).atZone(ZoneId.systemDefault()).toLocalDate()
+    fechaHora = Instant.ofEpochMilli(fechaHora).atZone(ZoneId.systemDefault()).toLocalDateTime()
 )
 
 fun RegistroSintoma.toEntity() = RegistroSintomaEntity(
@@ -20,5 +20,5 @@ fun RegistroSintoma.toEntity() = RegistroSintomaEntity(
     pacienteId = pacienteId,
     tipoSintoma = TipoSintomaData.valueOf(tipoSintoma.name),
     severidad = severidad,
-    fechaHora = fechaHora.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    fechaHora = fechaHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 )

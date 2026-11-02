@@ -7,8 +7,7 @@ import com.example.demo.dominio.model.RegistroEstadoMotor
 import com.example.demo.dominio.model.enums.EstadoMotor
 import com.example.demo.dominio.usecase.GestionarEstadoMotorUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.time.LocalTime
+import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalTime
 
 @HiltViewModel
 class RegistroEstadoMotorViewModel @Inject constructor(
@@ -62,7 +62,9 @@ class RegistroEstadoMotorViewModel @Inject constructor(
                     id = 0L,
                     pacienteId = pacienteId,
                     estadoMotor = estado,
-                    fechaHora = LocalDate.now(),
+                    fechaHora = LocalDateTime.now()
+                        .withHour(currentState.horaRegistrada)
+                        .withMinute(currentState.minutoRegistrado),
                     observacion = currentState.observaciones
                 )
 

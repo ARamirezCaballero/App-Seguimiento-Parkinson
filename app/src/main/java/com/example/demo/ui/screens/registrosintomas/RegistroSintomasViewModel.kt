@@ -8,7 +8,7 @@ import com.example.demo.dominio.model.RegistroSintoma
 import com.example.demo.dominio.model.enums.TipoSintoma
 import com.example.demo.dominio.usecase.GestionarSintomaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +59,7 @@ class RegistroSintomasViewModel @Inject constructor(
                     pacienteId = pacienteId,
                     tipoSintoma = tipo,
                     severidad = severidad,
-                    fechaHora = LocalDate.now()
+                    fechaHora = LocalDateTime.now()
                 )
 
                 gestionarSintomaUseCase.registrarSintoma(registro)

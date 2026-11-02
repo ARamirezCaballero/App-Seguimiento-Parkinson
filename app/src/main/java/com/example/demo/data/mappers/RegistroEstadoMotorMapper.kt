@@ -10,7 +10,7 @@ fun RegistroEstadoMotorEntity.toDomain() = RegistroEstadoMotor(
     id = id,
     pacienteId = pacienteId,
     estadoMotor = EstadoMotor.valueOf(estadoMotor.name),
-    fechaHora = Instant.ofEpochMilli(fechaHora).atZone(ZoneId.systemDefault()).toLocalDate(),
+    fechaHora = Instant.ofEpochMilli(fechaHora).atZone(ZoneId.systemDefault()).toLocalDateTime(),
     observacion = observacion
 )
 
@@ -18,6 +18,6 @@ fun RegistroEstadoMotor.toEntity() = RegistroEstadoMotorEntity(
     id = id,
     pacienteId = pacienteId,
     estadoMotor = com.example.demo.data.local.enums.EstadoMotor.valueOf(estadoMotor.name),
-    fechaHora = fechaHora.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(),
+    fechaHora = fechaHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
     observacion = observacion
 )
