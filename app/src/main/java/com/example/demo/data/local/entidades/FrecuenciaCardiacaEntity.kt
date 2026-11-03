@@ -9,14 +9,4 @@ data class FrecuenciaCardiacaEntity(
     val valor: Int,
     val fechaHora: Long,
     val fuente: String
-) {
-    fun sincronizarFrecuenciaCardiaca() {
-        //logica para sincronizar
-    }
-
-    fun esValorFueraDeRango(): Boolean {
-        //logica para determinar si el valor es fuera de rango
-        return false
-    }
-
-}
+)

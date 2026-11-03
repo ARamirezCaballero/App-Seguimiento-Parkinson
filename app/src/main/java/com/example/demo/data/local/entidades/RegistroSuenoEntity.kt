@@ -15,12 +15,4 @@ data class RegistroSuenoEntity(
     val minutosDespierto: Int,
     val fechaHora: Long,
     val fuente: String
-) {
-    fun sincronizarSesionSueno(){
-        //logica para sincronizar la sesion de sueño
-    }
-
-    fun calcularEficienciaSueno(){
-        //logica para calcular la eficiencia del sueño
-    }
-}
+)

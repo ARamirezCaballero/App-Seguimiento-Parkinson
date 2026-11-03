@@ -178,7 +178,7 @@ fun HistorialScreenPreview() {
     DemoTheme {
         val mockItem = ItemHistorial(
             id = 1L,
-            nombre = "Levodopa / Carbidopa 100mg - Tomada",
+            nombre = "Nombre Medicamento - 100mg",
             detalles = "Hora programada: 08:00 hs",
             categoria = CategoriaHistorial.MEDICAMENTOS,
             tipoRegistro = TipoRegistroHistorial.TOMA_MEDICACION,

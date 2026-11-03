@@ -44,7 +44,7 @@ fun HistorialItemCard(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            // 1. Hora del registro
+            //Hora del registro
             Text(
                 text = fechaHoraFormatted,
                 fontSize = 12.sp,
@@ -53,7 +53,7 @@ fun HistorialItemCard(
                 color = Color(0xFF4C0099)
             )
 
-            // 2. Nombre del registro
+            //Nombre del registro
             Text(
                 text = item.nombre,
                 fontSize = 16.sp,
@@ -72,7 +72,7 @@ fun HistorialItemCard(
                 )
             }
 
-            // 3. Etiqueta explicita de origen de datos
+            // Etiqueta explicita de origen de datos
             Text(
                 text = "Origen: ${item.origenDatos}",
                 fontSize = 11.sp,

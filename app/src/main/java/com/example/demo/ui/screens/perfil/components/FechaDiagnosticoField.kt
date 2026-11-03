@@ -1,6 +1,8 @@
 package com.example.demo.ui.screens.perfil.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DatePicker
@@ -17,6 +19,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import com.example.demo.R
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -33,6 +39,12 @@ fun FechaDiagnosticoField(
     errorMessage: String? = null,
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    if (isPressed) {
+        showDatePicker = true
+    }
 
     Column(modifier = modifier) {
         //Campo que muestra fecha seleccionada y con selector de fecha de Material Design 3
@@ -41,13 +53,21 @@ fun FechaDiagnosticoField(
             onValueChange = {},
             readOnly = true,
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable { showDatePicker = true },
+                .fillMaxWidth(),
+            interactionSource = interactionSource,
             label = {
                 //etiqueta "Fecha de diagnostico" con indicador de obligatorio (*)
                 Text(text = "Fecha de diagnóstico *")
             },
             placeholder = { Text(text = "AAAA-MM-DD") },
+            trailingIcon = {
+                IconButton(onClick = { showDatePicker = true }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_edit_calendar_24),
+                        contentDescription = "Seleccionar fecha"
+                    )
+                }
+            },
             isError = errorMessage != null,
             supportingText = {
                 //Mensaje de validacion por campo obligatorio vacio

@@ -10,6 +10,7 @@ import com.example.demo.dominio.repository.RegistroMedicacionRepository
 import com.example.demo.dominio.repository.SintomaRepository
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class GestionarHistorialUseCase @Inject constructor(
@@ -42,11 +43,13 @@ class GestionarHistorialUseCase @Inject constructor(
                 val nombreMed = med?.nombreComercial ?: "Medicamento"
                 val dosisStr = med?.dosis ?: ""
 
+                val horaFormateada = toma.fechaHoraProgramada.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+                
                 items.add(
                     ItemHistorial(
                         id = toma.id,
                         nombre = "$nombreMed $dosisStr".trim() + " - " + toma.estado.name.lowercase().replaceFirstChar { it.uppercase() },
-                        detalles = "Hora programada: ${toma.fechaHoraProgramada.toLocalTime()}",
+                        detalles = "Hora programada: $horaFormateada hs",
                         categoria = CategoriaHistorial.MEDICAMENTOS,
                         tipoRegistro = TipoRegistroHistorial.TOMA_MEDICACION,
                         fechaHora = toma.fechaHoraReal,
@@ -129,6 +132,22 @@ class GestionarHistorialUseCase @Inject constructor(
                     )
                 )
             }
+            
+            val frecCardiaca = healthDataRepository.obtenerDatosFrecuenciaCardiaca(pacienteId, inicioEpoch, finEpoch)
+            frecCardiaca.forEach { f ->
+                items.add(
+                    ItemHistorial(
+                        id = f.id,
+                        nombre = "Frecuencia Cardíaca: ${f.valor} bpm",
+                        detalles = "Capturado por el smartwatch",
+                        categoria = CategoriaHistorial.SMARTWATCH,
+                        tipoRegistro = TipoRegistroHistorial.ACTIVIDAD, // Se puede cambiar si en el futuro agregas TipoRegistroHistorial.FRECUENCIA_CARDIACA
+                        fechaHora = f.fechaHora,
+                        origenDatos = f.fuente,
+                        referenciaId = f.id
+                    )
+                )
+            }
         }
 
         return items.sortedByDescending { it.fechaHora }
@@ -137,7 +156,7 @@ class GestionarHistorialUseCase @Inject constructor(
     suspend fun eliminarRegistro(item: ItemHistorial) {
         when (item.tipoRegistro) {
             TipoRegistroHistorial.TOMA_MEDICACION -> {
-                // Registro de toma
+                registroMedicacionRepository.eliminarTomaPorId(item.referenciaId)
             }
             TipoRegistroHistorial.SINTOMA -> {
                 sintomaRepository.eliminarSintomaPorId(item.referenciaId)

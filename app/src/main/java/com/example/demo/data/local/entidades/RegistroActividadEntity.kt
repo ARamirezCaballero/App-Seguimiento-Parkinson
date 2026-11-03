@@ -13,13 +13,4 @@ data class RegistroActividadEntity(
     val distanciaMetros: Double,
     val fechaHora: Long,
     val fuente: String
-) {
-    fun sincronizarActividad() {
-        // Lógica para sincronizar la actividad
-    }
-
-    fun calcularPasosPromedio(): Int {
-        // Lógica para calcular los pasos
-        return 0
-    }
-}
+)

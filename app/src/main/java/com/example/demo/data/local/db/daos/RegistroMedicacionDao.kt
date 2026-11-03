@@ -28,4 +28,8 @@ interface RegistroMedicacionDao {
     //Actualizar una toma existente
     @Update
     suspend fun actualizarToma(toma: RegistroMedicacionEntity)
+
+    //Eliminar una toma concreta por id
+    @Query("DELETE FROM registros_medicaciones WHERE id = :id")
+    suspend fun eliminarTomaPorId(id: Long)
 }

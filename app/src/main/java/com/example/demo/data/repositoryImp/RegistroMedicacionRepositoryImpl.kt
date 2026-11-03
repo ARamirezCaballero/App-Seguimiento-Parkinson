@@ -43,4 +43,9 @@ class RegistroMedicacionRepositoryImpl @Inject constructor(
     override suspend fun actualizarToma(toma: RegistroMedicacion) {
         registroMedicacionDao.actualizarToma(toma.toEntity())
     }
+
+    //Eliminar una toma concreta por id
+    override suspend fun eliminarTomaPorId(id: Long) {
+        registroMedicacionDao.eliminarTomaPorId(id)
+    }
 }
