@@ -33,7 +33,7 @@ class RegistroTomaViewModel @Inject constructor(
     }
 
     fun cargarMedicamentos() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mensajeError = null) }
             try {
                 val pacienteId = 1L
@@ -64,29 +64,28 @@ class RegistroTomaViewModel @Inject constructor(
     }
 
     fun onMedicamentoSelected(item: MedicamentoConPautaItem) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val pautaId = item.pauta?.id ?: 0L
             val ultimaToma = gestionarTomaMedicamentoUseCase.obtenerUltimaTomaPorPauta(pautaId)
             
-            val horaDefecto: Int
-            val minutoDefecto: Int
+            val fechaHoraProgramadaSugerida: LocalDateTime
             
             if (ultimaToma != null && item.pauta != null) {
-                // Si hay una toma previa, la siguiente sugerida es: hora programada previa + intervalo
-                val siguienteHoraSugerida = ultimaToma.fechaHoraProgramada.plusHours(item.pauta.intervaloHoras.toLong())
-                horaDefecto = siguienteHoraSugerida.hour
-                minutoDefecto = siguienteHoraSugerida.minute
+                // Si hay una toma previa, la siguiente sugerida es: hora programada de ultima toma + intervalo
+                fechaHoraProgramadaSugerida = ultimaToma.fechaHoraProgramada.plusHours(item.pauta.intervaloHoras.toLong())
             } else {
                 // Si es la primera vez, se sugiere la hora inicial de la pauta
-                horaDefecto = item.pauta?.horaInicial ?: LocalTime.now().hour
-                minutoDefecto = 0
+                val ahora = LocalDateTime.now().withSecond(0).withNano(0)
+                val horaInicial = item.pauta?.horaInicial ?: LocalTime.now().hour
+                fechaHoraProgramadaSugerida = ahora.withHour(horaInicial).withMinute(0)
             }
 
             _uiState.update {
                 it.copy(
                     selectedMedicamento = item,
-                    horaRegistrada = horaDefecto,
-                    minutoRegistrado = minutoDefecto
+                    fechaHoraProgramadaSugerida = fechaHoraProgramadaSugerida,
+                    horaRegistrada = fechaHoraProgramadaSugerida.hour,
+                    minutoRegistrado = fechaHoraProgramadaSugerida.minute
                 )
             }
         }
@@ -101,7 +100,7 @@ class RegistroTomaViewModel @Inject constructor(
     }
 
     fun onDismissDialog() {
-        _uiState.update { it.copy(selectedMedicamento = null) }
+        _uiState.update { it.copy(selectedMedicamento = null, fechaHoraProgramadaSugerida = null) }
     }
 
     fun confirmarToma() {
@@ -109,17 +108,18 @@ class RegistroTomaViewModel @Inject constructor(
         val selectedItem = currentState.selectedMedicamento ?: return
         if (currentState.isSaving) return
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true, mensajeError = null, mensajeExito = null) }
             try {
                 val pacienteId = 1L
                 val ahora = LocalDateTime.now()
-                val fechaHoraReal = ahora
-                    .withHour(currentState.horaRegistrada)
-                    .withMinute(currentState.minutoRegistrado)
 
-                val horaProg = selectedItem.pauta?.horaInicial ?: currentState.horaRegistrada
-                val fechaHoraProgramada = ahora.withHour(horaProg).withMinute(0)
+                val fechaHoraProgramada = currentState.fechaHoraProgramadaSugerida
+                    ?: ahora.withHour(currentState.horaRegistrada).withMinute(0)
+
+                val fechaBase = fechaHoraProgramada.toLocalDate()
+                val fechaHoraReal = fechaBase
+                    .atTime(currentState.horaRegistrada, currentState.minutoRegistrado)
 
                 val pautaId = selectedItem.pauta?.id ?: 0L
                 val cant = selectedItem.pauta?.cantidad ?: 1.0
@@ -140,6 +140,7 @@ class RegistroTomaViewModel @Inject constructor(
                     it.copy(
                         isSaving = false,
                         selectedMedicamento = null,
+                        fechaHoraProgramadaSugerida = null,
                         mensajeExito = "Toma registrada correctamente"
                     )
                 }

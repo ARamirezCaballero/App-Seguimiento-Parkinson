@@ -132,7 +132,10 @@ class ConfiguracionMedicacionViewModel @Inject constructor(
                 val medicacionId = gestionarMedicacionUseCase.registrarMedicacion(medicacion)
 
                 val horaInicialInt = try {
-                    currentState.horaInicio.replace(" ", "").split(":")[0].toInt()
+                    val parts = currentState.horaInicio.replace(" ", "").split(":")
+                    val hh = parts[0].toInt()
+                    val mm = parts.getOrNull(1)?.toInt() ?: 0
+                    if (mm >= 30) (hh + 1) % 24 else hh
                 } catch (_: Exception) { 8 }
 
                 val dosisCant = currentState.dosisUnitaria.toDoubleOrNull() ?: 1.0
