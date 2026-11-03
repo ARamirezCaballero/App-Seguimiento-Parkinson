@@ -24,6 +24,10 @@ interface RegistroMedicacionDao {
     //Consultar tomas asociadas a una pauta
     @Query("SELECT * FROM registros_medicaciones WHERE pautaId = :pautaId")
     suspend fun consultarTomasPorPauta(pautaId: Long): List<RegistroMedicacionEntity>
+    
+    //Obtener la ultima toma registrada para una pauta especifica
+    @Query("SELECT * FROM registros_medicaciones WHERE pautaId = :pautaId ORDER BY fechaHoraReal DESC LIMIT 1")
+    suspend fun obtenerUltimaTomaPorPauta(pautaId: Long): RegistroMedicacionEntity?
 
     //Actualizar una toma existente
     @Update

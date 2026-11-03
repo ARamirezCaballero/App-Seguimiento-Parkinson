@@ -169,4 +169,21 @@ class GestionarHistorialUseCase @Inject constructor(
             }
         }
     }
+
+    suspend fun actualizarSeveridadSintoma(id: Long, nuevaSeveridad: Int) {
+        val sintoma = sintomaRepository.obtenerSintomaPorId(id) ?: return
+        sintomaRepository.actualizarSintoma(sintoma.copy(severidad = nuevaSeveridad))
+    }
+
+    suspend fun actualizarHoraToma(id: Long, nuevaHora: Int, nuevoMinuto: Int) {
+        val toma = registroMedicacionRepository.obtenerTomaPorId(id) ?: return
+        val nuevaFechaHoraReal = toma.fechaHoraReal.withHour(nuevaHora).withMinute(nuevoMinuto)
+        registroMedicacionRepository.actualizarToma(toma.copy(fechaHoraReal = nuevaFechaHoraReal))
+    }
+
+    suspend fun actualizarHoraEstadoMotor(id: Long, nuevaHora: Int, nuevoMinuto: Int) {
+        val estado = registroEstadoMotorRepository.obtenerEstadoMotorPorId(id) ?: return
+        val nuevaFechaHora = estado.fechaHora.withHour(nuevaHora).withMinute(nuevoMinuto)
+        registroEstadoMotorRepository.actualizarEstadoMotor(estado.copy(fechaHora = nuevaFechaHora))
+    }
 }

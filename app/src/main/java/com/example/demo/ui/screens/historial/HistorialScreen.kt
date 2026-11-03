@@ -60,6 +60,10 @@ fun HistorialScreen(
         onItemClick = viewModel::onItemClick,
         onEliminarItem = viewModel::eliminarItemSeleccionado,
         onDismissDialog = viewModel::onDismissActionDialog,
+        onSeveridadChanged = viewModel::onSeveridadChanged,
+        onHoraChanged = viewModel::onHoraChanged,
+        onMinutoChanged = viewModel::onMinutoChanged,
+        onGuardarEdicion = viewModel::guardarCambiosEdicion,
         modifier = modifier
     )
 }
@@ -73,6 +77,10 @@ fun HistorialScreenContent(
     onItemClick: (ItemHistorial) -> Unit,
     onEliminarItem: () -> Unit,
     onDismissDialog: () -> Unit,
+    onSeveridadChanged: (Int) -> Unit,
+    onHoraChanged: (Int) -> Unit,
+    onMinutoChanged: (Int) -> Unit,
+    onGuardarEdicion: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -165,8 +173,13 @@ fun HistorialScreenContent(
         uiState.selectedItemForAction?.let { item ->
             HistorialActionDialog(
                 item = item,
+                uiState = uiState,
                 onEliminarClick = onEliminarItem,
-                onCancelarClick = onDismissDialog
+                onCancelarClick = onDismissDialog,
+                onSeveridadChanged = onSeveridadChanged,
+                onHoraChanged = onHoraChanged,
+                onMinutoChanged = onMinutoChanged,
+                onGuardarClick = onGuardarEdicion
             )
         }
     }
@@ -196,7 +209,11 @@ fun HistorialScreenPreview() {
             onPeriodoSelected = { _, _ -> },
             onItemClick = {},
             onEliminarItem = {},
-            onDismissDialog = {}
+            onDismissDialog = {},
+            onSeveridadChanged = {},
+            onHoraChanged = {},
+            onMinutoChanged = {},
+            onGuardarEdicion = {}
         )
     }
 }

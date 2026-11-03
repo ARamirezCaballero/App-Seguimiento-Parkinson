@@ -64,14 +64,31 @@ class RegistroTomaViewModel @Inject constructor(
     }
 
     fun onMedicamentoSelected(item: MedicamentoConPautaItem) {
-        val horaDefecto = item.pauta?.horaInicial ?: LocalTime.now().hour
-        val minutoDefecto = LocalTime.now().minute
-        _uiState.update {
-            it.copy(
-                selectedMedicamento = item,
-                horaRegistrada = horaDefecto,
-                minutoRegistrado = minutoDefecto
-            )
+        viewModelScope.launch(Dispatchers.IO) {
+            val pautaId = item.pauta?.id ?: 0L
+            val ultimaToma = gestionarTomaMedicamentoUseCase.obtenerUltimaTomaPorPauta(pautaId)
+            
+            val horaDefecto: Int
+            val minutoDefecto: Int
+            
+            if (ultimaToma != null && item.pauta != null) {
+                // Si hay una toma previa, la siguiente sugerida es: hora programada previa + intervalo
+                val siguienteHoraSugerida = ultimaToma.fechaHoraProgramada.plusHours(item.pauta.intervaloHoras.toLong())
+                horaDefecto = siguienteHoraSugerida.hour
+                minutoDefecto = siguienteHoraSugerida.minute
+            } else {
+                // Si es la primera vez, se sugiere la hora inicial de la pauta
+                horaDefecto = item.pauta?.horaInicial ?: LocalTime.now().hour
+                minutoDefecto = 0
+            }
+
+            _uiState.update {
+                it.copy(
+                    selectedMedicamento = item,
+                    horaRegistrada = horaDefecto,
+                    minutoRegistrado = minutoDefecto
+                )
+            }
         }
     }
 

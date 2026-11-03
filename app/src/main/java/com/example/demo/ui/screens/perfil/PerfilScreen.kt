@@ -9,10 +9,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,8 +25,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.demo.ui.screens.perfil.components.FormularioPerfilActions
 import com.example.demo.ui.screens.perfil.components.PatientInformationForm
 import com.example.demo.ui.screens.perfil.components.ProfileHeader
-import com.example.demo.ui.screens.perfil.components.ProfileStatusMessage
 import com.example.demo.ui.theme.DemoTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun PerfilScreen(
@@ -32,22 +36,28 @@ fun PerfilScreen(
     onCancelar: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // Al guardar exitosamente el perfil, confirma el guardado y vuelve a inicio
-    LaunchedEffect(uiState.mensajeExito) {
+    LaunchedEffect(uiState.mensajeExito, uiState.mensajeError) {
+        uiState.mensajeError?.let {
+            snackbarHostState.showSnackbar(it)
+        }
         uiState.mensajeExito?.let {
+            launch { snackbarHostState.showSnackbar(it) }
+            delay(1500)
             onCancelar()
         }
     }
 
     // Estructura de la pantalla Perfil (sin lógica)
-    //se compone de ProfileHeader, PatientInformationForm, FormularioPerfilActions y ProfileStatusMessage
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = Color.White,
         topBar = {
             ProfileHeader()
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         if (uiState.isLoading) {
             Box(
@@ -67,11 +77,6 @@ fun PerfilScreen(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                ProfileStatusMessage(
-                    mensajeError = uiState.mensajeError,
-                    mensajeExito = uiState.mensajeExito
-                )
-
                 PatientInformationForm(
                     nombre = uiState.nombre,
                     onNombreChange = viewModel::onNombreChanged,

@@ -125,7 +125,7 @@ fun EstadoMotorDialogContent(
                 )
 
                 Text(
-                    text = "Hora de la toma:",
+                    text = "Hora del evento:",
                     color = Color.White,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,

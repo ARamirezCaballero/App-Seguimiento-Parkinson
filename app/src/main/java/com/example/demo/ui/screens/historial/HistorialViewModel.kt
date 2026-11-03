@@ -68,11 +68,85 @@ class HistorialViewModel @Inject constructor(
     }
 
     fun onItemClick(item: ItemHistorial) {
-        _uiState.update { it.copy(selectedItemForAction = item) }
+        val severidadParsed = if (item.nombre.contains("Severidad: ")) {
+            item.nombre.substringAfter("Severidad: ").substringBefore(")").toIntOrNull() ?: 1
+        } else 1
+        
+        _uiState.update { 
+            it.copy(
+                selectedItemForAction = item,
+                editingSeveridad = severidadParsed,
+                editingHora = item.fechaHora.hour,
+                editingMinuto = item.fechaHora.minute
+            ) 
+        }
     }
 
     fun onDismissActionDialog() {
-        _uiState.update { it.copy(selectedItemForAction = null) }
+        _uiState.update { 
+            it.copy(
+                selectedItemForAction = null,
+                isEditing = false
+            ) 
+        }
+    }
+
+    fun onSeveridadChanged(severidad: Int) {
+        _uiState.update { it.copy(editingSeveridad = severidad) }
+    }
+
+    fun onHoraChanged(hora: Int) {
+        _uiState.update { it.copy(editingHora = hora.coerceIn(0, 23)) }
+    }
+
+    fun onMinutoChanged(minuto: Int) {
+        _uiState.update { it.copy(editingMinuto = minuto.coerceIn(0, 59)) }
+    }
+
+    fun guardarCambiosEdicion() {
+        val currentState = _uiState.value
+        val item = currentState.selectedItemForAction ?: return
+        if (currentState.isEditing) return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _uiState.update { it.copy(isEditing = true, mensajeError = null, mensajeExito = null) }
+            try {
+                when (item.tipoRegistro) {
+                    com.example.demo.dominio.model.enums.TipoRegistroHistorial.SINTOMA -> {
+                        currentState.editingSeveridad?.let { sev ->
+                            gestionarHistorialUseCase.actualizarSeveridadSintoma(item.referenciaId, sev)
+                        }
+                    }
+                    com.example.demo.dominio.model.enums.TipoRegistroHistorial.TOMA_MEDICACION -> {
+                        if (currentState.editingHora != null && currentState.editingMinuto != null) {
+                            gestionarHistorialUseCase.actualizarHoraToma(item.referenciaId, currentState.editingHora, currentState.editingMinuto)
+                        }
+                    }
+                    com.example.demo.dominio.model.enums.TipoRegistroHistorial.ESTADO_MOTOR -> {
+                        if (currentState.editingHora != null && currentState.editingMinuto != null) {
+                            gestionarHistorialUseCase.actualizarHoraEstadoMotor(item.referenciaId, currentState.editingHora, currentState.editingMinuto)
+                        }
+                    }
+                    else -> {}
+                }
+
+                _uiState.update {
+                    it.copy(
+                        isEditing = false,
+                        selectedItemForAction = null,
+                        mensajeExito = "Registro actualizado correctamente"
+                    )
+                }
+                cargarHistorial()
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isEditing = false,
+                        mensajeError = "Error al actualizar el registro: ${e.message}"
+                    )
+                }
+            }
+        }
     }
 
     fun eliminarItemSeleccionado() {

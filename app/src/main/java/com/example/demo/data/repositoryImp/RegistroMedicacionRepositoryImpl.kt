@@ -38,6 +38,11 @@ class RegistroMedicacionRepositoryImpl @Inject constructor(
     override suspend fun consultarTomasPorPauta(pautaId: Long): List<RegistroMedicacion> {
         return registroMedicacionDao.consultarTomasPorPauta(pautaId).map { it.toDomain() }
     }
+    
+    //Obtener la ultima toma de una pauta
+    override suspend fun obtenerUltimaTomaPorPauta(pautaId: Long): RegistroMedicacion? {
+        return registroMedicacionDao.obtenerUltimaTomaPorPauta(pautaId)?.toDomain()
+    }
 
     //Actualizar una toma existente para corregirla
     override suspend fun actualizarToma(toma: RegistroMedicacion) {

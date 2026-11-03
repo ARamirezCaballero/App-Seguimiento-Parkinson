@@ -15,6 +15,8 @@ interface RegistroMedicacionRepository {
     ): List<RegistroMedicacion>
 
     suspend fun consultarTomasPorPauta(pautaId: Long): List<RegistroMedicacion>
+    
+    suspend fun obtenerUltimaTomaPorPauta(pautaId: Long): RegistroMedicacion?
 
     suspend fun actualizarToma(toma: RegistroMedicacion)
 

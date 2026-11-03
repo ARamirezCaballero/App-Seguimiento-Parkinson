@@ -32,6 +32,11 @@ class GestionarTomaMedicamentoUseCase @Inject constructor(
         return registroMedicacionRepository.consultarTomasPorPauta(pautaId)
     }
 
+    //Obtener ultima toma de pauta
+    suspend fun obtenerUltimaTomaPorPauta(pautaId: Long): RegistroMedicacion? {
+        return registroMedicacionRepository.obtenerUltimaTomaPorPauta(pautaId)
+    }
+
     //Modificar toma existente
     suspend fun actualizarToma(toma: RegistroMedicacion) {
         registroMedicacionRepository.actualizarToma(toma)
