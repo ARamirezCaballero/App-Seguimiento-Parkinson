@@ -14,7 +14,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 class GestionarEstadoMotorUseCaseTest {
 
@@ -25,7 +25,7 @@ class GestionarEstadoMotorUseCaseTest {
         id = 1L,
         pacienteId = 10L,
         estadoMotor = EstadoMotor.ON,
-        fechaHora = LocalDate.of(2025, 3, 30),
+        fechaHora = LocalDateTime.of(2025, 3, 30, 8, 0),
         observacion = "Paciente en estado ON sin complicaciones"
     )
 

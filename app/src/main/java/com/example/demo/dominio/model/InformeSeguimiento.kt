@@ -13,6 +13,9 @@ data class ResumenAdherencia(
 
 data class ResumenEstadoMotorYSintomas(
     val distribucionPorcentualMotor: Map<EstadoMotor, Double> = emptyMap(),
+    val duracionMinutosPorEstado: Map<EstadoMotor, Long> = emptyMap(),
+    val porcentajeSinInformacion: Double = 0.0,
+    val minutosSinInformacion: Long = 0L,
     val severidadPromedioMotores: Double = 0.0,
     val severidadPromedioNoMotores: Double = 0.0,
     val sintomasMotoresMasFrecuentes: List<String> = emptyList(),

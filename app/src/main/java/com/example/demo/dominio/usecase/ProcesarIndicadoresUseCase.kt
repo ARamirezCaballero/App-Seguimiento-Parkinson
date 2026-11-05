@@ -23,29 +23,73 @@ class ProcesarIndicadoresUseCase @Inject constructor(
     private val healthDataRepository: HealthDataRepository
 ) {
 
-    //Calcular cantidades y porcentajes de registros de estado motor por periodo
+    //Calcular cantidades, duraciones (vigencia max 1h) y porcentajes de registros de estado motor por periodo
     suspend fun calcularDistribucionEstadoMotor(
         pacienteId: Long,
         fechaInicio: Long,
         fechaFin: Long
     ): DistribucionEstadoMotor {
-        val registros = registroEstadoMotorRepository.consultarIntervalosPorPeriodo(pacienteId, fechaInicio, fechaFin)
-        val total = registros.size
+        val registrosRaw = registroEstadoMotorRepository.consultarIntervalosPorPeriodo(pacienteId, fechaInicio, fechaFin)
+        val total = registrosRaw.size
         if (total == 0) {
             return DistribucionEstadoMotor(
                 conteoPorEstado = emptyMap(),
                 porcentajePorEstado = emptyMap(),
+                duracionMinutosPorEstado = emptyMap(),
+                minutosSinInformacion = 0L,
+                porcentajeSinInformacion = 0.0,
                 totalRegistros = 0,
                 mensaje = "Sin información suficiente"
             )
         }
 
+        val registros = registrosRaw.sortedBy {
+            it.fechaHora.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()
+        }
         val conteo = registros.groupingBy { it.estadoMotor }.eachCount()
-        val porcentaje = conteo.mapValues { (_, count) -> (count.toDouble() / total) * 100.0 }
+
+        val duracionMaxMs = 60 * 60 * 1000L // 1 hora de vigencia maxima por registro
+
+        val duracionMsPorEstado = mutableMapOf<com.example.demo.dominio.model.enums.EstadoMotor, Long>()
+
+        for (i in registros.indices) {
+            val reg = registros[i]
+            val regEpoch = reg.fechaHora.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()
+            val inicioEfectivo = regEpoch.coerceAtLeast(fechaInicio)
+
+            val expiracionMs = regEpoch + duracionMaxMs
+            val siguienteInicioMs = if (i + 1 < registros.size) {
+                registros[i + 1].fechaHora.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()
+            } else {
+                Long.MAX_VALUE
+            }
+
+            val finEfectivo = minOf(expiracionMs, siguienteInicioMs, fechaFin)
+
+            val duracionMs = (finEfectivo - inicioEfectivo).coerceAtLeast(0L)
+            val duracionMin = duracionMs / (60 * 1000L)
+
+            val estado = reg.estadoMotor
+            duracionMsPorEstado[estado] = (duracionMsPorEstado[estado] ?: 0L) + duracionMin
+        }
+
+        val periodoTotalMs = (fechaFin - fechaInicio).coerceAtLeast(1L)
+        val periodoTotalMinutos = (periodoTotalMs / (60 * 1000L)).coerceAtLeast(1L)
+
+        val totalMinutosCubiertos = duracionMsPorEstado.values.sum()
+        val minutosSinInfo = (periodoTotalMinutos - totalMinutosCubiertos).coerceAtLeast(0L)
+
+        val porcentaje = duracionMsPorEstado.mapValues { (_, min) ->
+            (min.toDouble() / periodoTotalMinutos.toDouble()) * 100.0
+        }
+        val pctSinInfo = (minutosSinInfo.toDouble() / periodoTotalMinutos.toDouble()) * 100.0
 
         return DistribucionEstadoMotor(
             conteoPorEstado = conteo,
             porcentajePorEstado = porcentaje,
+            duracionMinutosPorEstado = duracionMsPorEstado,
+            minutosSinInformacion = minutosSinInfo,
+            porcentajeSinInformacion = pctSinInfo,
             totalRegistros = total,
             mensaje = "Total registros: $total"
         )

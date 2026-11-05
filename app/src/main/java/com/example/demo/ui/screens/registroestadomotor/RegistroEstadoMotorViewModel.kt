@@ -58,14 +58,18 @@ class RegistroEstadoMotorViewModel @Inject constructor(
             _uiState.update { it.copy(isSaving = true, mensajeError = null, mensajeExito = null) }
             try {
                 val pacienteId = 1L
+                val ahoraCarga = LocalDateTime.now()
+                val fechaHoraAcontecimiento = ahoraCarga
+                    .withHour(currentState.horaRegistrada)
+                    .withMinute(currentState.minutoRegistrado)
+
                 val registro = RegistroEstadoMotor(
                     id = 0L,
                     pacienteId = pacienteId,
                     estadoMotor = estado,
-                    fechaHora = LocalDateTime.now()
-                        .withHour(currentState.horaRegistrada)
-                        .withMinute(currentState.minutoRegistrado),
-                    observacion = currentState.observaciones
+                    fechaHora = fechaHoraAcontecimiento,
+                    observacion = currentState.observaciones,
+                    horaCarga = ahoraCarga
                 )
 
                 gestionarEstadoMotorUseCase.registrarEstadoMotor(registro)

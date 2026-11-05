@@ -62,13 +62,37 @@ class GenerarInformePdfUseCase @Inject constructor(
         val estadosMotores = registroEstadoMotorRepository.consultarIntervalosPorPeriodo(pacienteId, inicioEpoch, finEpoch)
         val sintomas = sintomaRepository.consultarSintomasPorPeriodo(pacienteId, inicioEpoch, finEpoch)
 
-        val distribucionMotor = if (estadosMotores.isNotEmpty()) {
-            val total = estadosMotores.size.toDouble()
-            estadosMotores.groupingBy { it.estadoMotor }
-                .eachCount()
-                .mapValues { (_, count) -> (count / total) * 100.0 }
-        } else {
-            emptyMap()
+        var distribucionMotor = emptyMap<com.example.demo.dominio.model.enums.EstadoMotor, Double>()
+        var duracionMap = emptyMap<com.example.demo.dominio.model.enums.EstadoMotor, Long>()
+        var pctSinInfo = 0.0
+        var minSinInfo = 0L
+
+        if (estadosMotores.isNotEmpty()) {
+            val registrosSorted = estadosMotores.sortedBy { it.fechaHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() }
+            val duracionMaxMs = 60 * 60 * 1000L
+            val duracionMapInternal = mutableMapOf<com.example.demo.dominio.model.enums.EstadoMotor, Long>()
+
+            for (i in registrosSorted.indices) {
+                val reg = registrosSorted[i]
+                val regEpoch = reg.fechaHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                val inicioEfectivo = regEpoch.coerceAtLeast(inicioEpoch)
+                val expiracionMs = regEpoch + duracionMaxMs
+                val siguienteInicioMs = if (i + 1 < registrosSorted.size) {
+                    registrosSorted[i + 1].fechaHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                } else {
+                    Long.MAX_VALUE
+                }
+                val finEfectivo = minOf(expiracionMs, siguienteInicioMs, finEpoch)
+                val duracionMin = (finEfectivo - inicioEfectivo).coerceAtLeast(0L) / (60 * 1000L)
+                duracionMapInternal[reg.estadoMotor] = (duracionMapInternal[reg.estadoMotor] ?: 0L) + duracionMin
+            }
+
+            val periodoTotalMin = ((finEpoch - inicioEpoch).coerceAtLeast(1L)) / (60 * 1000L)
+            val duracionCubierta = duracionMapInternal.values.sum()
+            minSinInfo = (periodoTotalMin - duracionCubierta).coerceAtLeast(0L)
+            distribucionMotor = duracionMapInternal.mapValues { (_, m) -> (m.toDouble() / periodoTotalMin.coerceAtLeast(1L).toDouble()) * 100.0 }
+            duracionMap = duracionMapInternal
+            pctSinInfo = (minSinInfo.toDouble() / periodoTotalMin.coerceAtLeast(1L).toDouble()) * 100.0
         }
 
         val sintomasMotores = sintomas.filter { it.tipoSintoma.esMotor }
@@ -91,6 +115,9 @@ class GenerarInformePdfUseCase @Inject constructor(
 
         val estadoYSintomasResumen = ResumenEstadoMotorYSintomas(
             distribucionPorcentualMotor = distribucionMotor,
+            duracionMinutosPorEstado = duracionMap,
+            porcentajeSinInformacion = pctSinInfo,
+            minutosSinInformacion = minSinInfo,
             severidadPromedioMotores = sevMotores,
             severidadPromedioNoMotores = sevNoMotores,
             sintomasMotoresMasFrecuentes = maxFreqMotor,

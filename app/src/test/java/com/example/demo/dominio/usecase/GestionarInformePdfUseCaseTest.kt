@@ -67,8 +67,8 @@ class GestionarInformePdfUseCaseTest {
         // Arrange
         val paciente = Paciente(10L, "Juan", "Pérez", LocalDate.of(2020, 1, 15))
         val toma = RegistroMedicacion(1L, 10L, 5L, LocalDateTime.of(2025, 3, 10, 8, 0), LocalDateTime.of(2025, 3, 10, 8, 0), EstadoMedicacion.TOMADA, 1.0)
-        val estadoMotor = RegistroEstadoMotor(1L, 10L, EstadoMotor.ON, LocalDate.of(2025, 3, 10), "Estable")
-        val sintoma = RegistroSintoma(1L, 10L, TipoSintoma.Temblor, 2, LocalDate.of(2025, 3, 10))
+        val estadoMotor = RegistroEstadoMotor(1L, 10L, EstadoMotor.ON, LocalDateTime.of(2025, 3, 10, 8, 0), "Estable")
+        val sintoma = RegistroSintoma(1L, 10L, TipoSintoma.Temblor, 2, LocalDateTime.of(2025, 3, 10, 8, 0))
         val sueno = RegistroSueno(1L, 10L, 23, 7, 480.0, 240, 120, 90, 30, LocalDateTime.of(2025, 3, 10, 7, 0), "HC")
 
         coEvery { pacienteRepository.obtenerPaciente() } returns paciente

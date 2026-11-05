@@ -46,6 +46,7 @@ object DatabaseModule {
             AppDatabase.NAME
         )
             .openHelperFactory(factory)
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
     }
 

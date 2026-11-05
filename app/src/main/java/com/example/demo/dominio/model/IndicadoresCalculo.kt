@@ -6,6 +6,9 @@ import java.time.LocalDateTime
 data class DistribucionEstadoMotor(
     val conteoPorEstado: Map<EstadoMotor, Int> = emptyMap(),
     val porcentajePorEstado: Map<EstadoMotor, Double> = emptyMap(),
+    val duracionMinutosPorEstado: Map<EstadoMotor, Long> = emptyMap(),
+    val minutosSinInformacion: Long = 0L,
+    val porcentajeSinInformacion: Double = 0.0,
     val totalRegistros: Int = 0,
     val mensaje: String = if (totalRegistros == 0) "Sin información suficiente" else "Total registros: $totalRegistros"
 )

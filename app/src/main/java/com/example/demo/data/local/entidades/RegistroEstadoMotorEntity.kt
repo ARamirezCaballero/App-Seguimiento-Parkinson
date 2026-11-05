@@ -9,7 +9,8 @@ data class RegistroEstadoMotorEntity(
     val pacienteId: Long,
     val estadoMotor: EstadoMotor,
     val fechaHora: Long,
-    val observacion: String
+    val observacion: String,
+    val horaCarga: Long = System.currentTimeMillis()
 ) {
     fun registrarEstadoMotor() {
         // Lógica para registrar el estado del motor

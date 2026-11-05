@@ -26,7 +26,7 @@ class GestionarSintomaUseCaseTest {
         pacienteId = 10L,
         tipoSintoma = TipoSintoma.Temblor,
         severidad = 3,
-        fechaHora = LocalDate.of(2025, 3, 30)
+        fechaHora = java.time.LocalDateTime.of(2025, 3, 30, 8, 0)
     )
 
     @Before

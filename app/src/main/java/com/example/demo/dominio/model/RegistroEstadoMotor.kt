@@ -8,6 +8,7 @@ data class RegistroEstadoMotor(
     val pacienteId: Long,
     val estadoMotor: EstadoMotor,
     val fechaHora: LocalDateTime,
-    val observacion: String
+    val observacion: String,
+    val horaCarga: LocalDateTime = LocalDateTime.now()
 ) {
 }

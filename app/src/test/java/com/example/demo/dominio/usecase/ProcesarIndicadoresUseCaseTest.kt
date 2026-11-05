@@ -59,26 +59,34 @@ class ProcesarIndicadoresUseCaseTest {
 
     @Test
     fun `calcularDistribucionEstadoMotor procesa conteos y porcentajes correctamente`() = runTest {
-        // Arrange
+        // Arrange: Periodo de 4 horas (0 a 14,400,000 ms = 240 minutos)
+        val inicioEpoch = 0L
+        val finEpoch = 4 * 3600 * 1000L // 4 horas
+        val fecha0 = java.time.Instant.ofEpochMilli(0L).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()
+        val fecha1 = java.time.Instant.ofEpochMilli(3600 * 1000L).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()
+        val fecha2 = java.time.Instant.ofEpochMilli(2 * 3600 * 1000L).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()
+        val fecha3 = java.time.Instant.ofEpochMilli(3 * 3600 * 1000L).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()
+
         val listaEstados = listOf(
-            RegistroEstadoMotor(1, 10, EstadoMotor.ON, fechaBase, "Obs1"),
-            RegistroEstadoMotor(2, 10, EstadoMotor.ON, fechaBase, "Obs2"),
-            RegistroEstadoMotor(3, 10, EstadoMotor.OFF, fechaBase, "Obs3"),
-            RegistroEstadoMotor(4, 10, EstadoMotor.Discinesia, fechaBase, "Obs4")
+            RegistroEstadoMotor(1, 10, EstadoMotor.ON, fecha0, "Obs1"),
+            RegistroEstadoMotor(2, 10, EstadoMotor.ON, fecha1, "Obs2"),
+            RegistroEstadoMotor(3, 10, EstadoMotor.OFF, fecha2, "Obs3"),
+            RegistroEstadoMotor(4, 10, EstadoMotor.Discinesia, fecha3, "Obs4")
         )
         coEvery {
-            registroEstadoMotorRepository.consultarIntervalosPorPeriodo(10L, 1000L, 2000L)
+            registroEstadoMotorRepository.consultarIntervalosPorPeriodo(10L, inicioEpoch, finEpoch)
         } returns listaEstados
 
         // Act
-        val distribucion = useCase.calcularDistribucionEstadoMotor(10L, 1000L, 2000L)
+        val distribucion = useCase.calcularDistribucionEstadoMotor(10L, inicioEpoch, finEpoch)
 
         // Assert
         assertEquals(4, distribucion.totalRegistros)
         assertEquals(50.0, distribucion.porcentajePorEstado[EstadoMotor.ON]!!, 0.01)
         assertEquals(25.0, distribucion.porcentajePorEstado[EstadoMotor.OFF]!!, 0.01)
         assertEquals(25.0, distribucion.porcentajePorEstado[EstadoMotor.Discinesia]!!, 0.01)
-        coVerify(exactly = 1) { registroEstadoMotorRepository.consultarIntervalosPorPeriodo(10L, 1000L, 2000L) }
+        assertEquals(0.0, distribucion.porcentajeSinInformacion, 0.01)
+        coVerify(exactly = 1) { registroEstadoMotorRepository.consultarIntervalosPorPeriodo(10L, inicioEpoch, finEpoch) }
     }
 
     @Test
@@ -98,10 +106,36 @@ class ProcesarIndicadoresUseCaseTest {
     }
 
     @Test
+    fun `calcularDistribucionEstadoMotor clasifica tiempo restante tras expiracion de 1h como Sin informacion`() = runTest {
+        // Arrange: Periodo de 4 horas (240 min). Un registro ON a la hora 0.
+        val inicioEpoch = 0L
+        val finEpoch = 4 * 3600 * 1000L // 240 minutos
+        val fecha0 = java.time.Instant.ofEpochMilli(0L).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()
+
+        val listaEstados = listOf(
+            RegistroEstadoMotor(1, 10, EstadoMotor.ON, fecha0, "Obs1")
+        )
+        coEvery {
+            registroEstadoMotorRepository.consultarIntervalosPorPeriodo(10L, inicioEpoch, finEpoch)
+        } returns listaEstados
+
+        // Act
+        val distribucion = useCase.calcularDistribucionEstadoMotor(10L, inicioEpoch, finEpoch)
+
+        // Assert: ON dura 60 min (25%), Sin info dura 180 min (75%)
+        assertEquals(1, distribucion.totalRegistros)
+        assertEquals(60L, distribucion.duracionMinutosPorEstado[EstadoMotor.ON])
+        assertEquals(25.0, distribucion.porcentajePorEstado[EstadoMotor.ON]!!, 0.01)
+        assertEquals(180L, distribucion.minutosSinInformacion)
+        assertEquals(75.0, distribucion.porcentajeSinInformacion, 0.01)
+        coVerify(exactly = 1) { registroEstadoMotorRepository.consultarIntervalosPorPeriodo(10L, inicioEpoch, finEpoch) }
+    }
+
+    @Test
     fun `obtenerSintomasMotoresPorPeriodo filtra unicamente los sintomas motores`() = runTest {
         // Arrange
-        val sintomaMotor = RegistroSintoma(1, 10, TipoSintoma.Temblor, 3, fechaBase)
-        val sintomaNoMotor = RegistroSintoma(2, 10, TipoSintoma.Fatiga, 2, fechaBase)
+        val sintomaMotor = RegistroSintoma(1, 10, TipoSintoma.Temblor, 3, fechaHoraBase)
+        val sintomaNoMotor = RegistroSintoma(2, 10, TipoSintoma.Fatiga, 2, fechaHoraBase)
         coEvery {
             sintomaRepository.consultarSintomasPorPeriodo(10L, 1000L, 2000L)
         } returns listOf(sintomaMotor, sintomaNoMotor)
@@ -119,8 +153,8 @@ class ProcesarIndicadoresUseCaseTest {
     @Test
     fun `obtenerSintomasNoMotoresPorPeriodo filtra unicamente los sintomas no motores`() = runTest {
         // Arrange
-        val sintomaMotor = RegistroSintoma(1, 10, TipoSintoma.Rigidez, 4, fechaBase)
-        val sintomaNoMotor = RegistroSintoma(2, 10, TipoSintoma.Fatiga, 3, fechaBase)
+        val sintomaMotor = RegistroSintoma(1, 10, TipoSintoma.Rigidez, 4, fechaHoraBase)
+        val sintomaNoMotor = RegistroSintoma(2, 10, TipoSintoma.Fatiga, 3, fechaHoraBase)
         coEvery {
             sintomaRepository.consultarSintomasPorPeriodo(10L, 1000L, 2000L)
         } returns listOf(sintomaMotor, sintomaNoMotor)
