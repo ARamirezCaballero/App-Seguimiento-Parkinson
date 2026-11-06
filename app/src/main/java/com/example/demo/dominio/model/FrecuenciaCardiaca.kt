@@ -7,6 +7,7 @@ data class FrecuenciaCardiaca(
     val pacienteId: Long,
     val valor: Int,
     val fechaHora: LocalDateTime,
-    val fuente: String
+    val fuente: String,
+    val healthRecordId: String? = null
 ) {
 }

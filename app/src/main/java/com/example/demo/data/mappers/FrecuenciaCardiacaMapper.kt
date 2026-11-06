@@ -10,7 +10,8 @@ fun FrecuenciaCardiacaEntity.toDomain() = FrecuenciaCardiaca(
     pacienteId = pacienteId,
     valor = valor,
     fechaHora = Instant.ofEpochMilli(fechaHora).atZone(ZoneId.systemDefault()).toLocalDateTime(),
-    fuente = fuente
+    fuente = fuente,
+    healthRecordId = healthRecordId
 )
 
 fun FrecuenciaCardiaca.toEntity() = FrecuenciaCardiacaEntity(
@@ -18,5 +19,6 @@ fun FrecuenciaCardiaca.toEntity() = FrecuenciaCardiacaEntity(
     pacienteId = pacienteId,
     valor = valor,
     fechaHora = fechaHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-    fuente = fuente
+    fuente = fuente,
+    healthRecordId = healthRecordId
 )

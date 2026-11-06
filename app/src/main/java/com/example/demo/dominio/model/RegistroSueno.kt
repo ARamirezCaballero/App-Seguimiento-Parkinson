@@ -13,6 +13,7 @@ data class RegistroSueno(
     val minutosREM: Int,
     val minutosDespierto: Int,
     val fechaHora: LocalDateTime,
-    val fuente: String
+    val fuente: String,
+    val healthRecordId: String? = null
 ) {
 }

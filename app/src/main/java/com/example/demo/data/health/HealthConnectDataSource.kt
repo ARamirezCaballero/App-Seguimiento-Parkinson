@@ -63,7 +63,8 @@ class HealthConnectDataSource @Inject constructor(
                     pasos = record.count.toInt(),
                     distanciaMetros = totalDistancia,
                     fechaHora = record.startTime.toEpochMilli(),
-                    fuente = "Health Connect"
+                    fuente = "Health Connect",
+                    healthRecordId = record.metadata.id
                 )
             }
         } catch (_: Exception) {
@@ -106,7 +107,8 @@ class HealthConnectDataSource @Inject constructor(
                     minutosREM = minREM,
                     minutosDespierto = minDespierto,
                     fechaHora = session.startTime.toEpochMilli(),
-                    fuente = "Health Connect"
+                    fuente = "Health Connect",
+                    healthRecordId = session.metadata.id
                 )
             }
         } catch (_: Exception) {
@@ -128,7 +130,8 @@ class HealthConnectDataSource @Inject constructor(
                         pacienteId = pacienteId,
                         valor = sample.beatsPerMinute.toInt(),
                         fechaHora = sample.time.toEpochMilli(),
-                        fuente = "Health Connect"
+                        fuente = "Health Connect",
+                        healthRecordId = "${record.metadata.id}_${sample.time.toEpochMilli()}"
                     )
                 }
             }

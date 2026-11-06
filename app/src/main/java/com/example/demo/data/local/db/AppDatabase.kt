@@ -39,7 +39,7 @@ import com.example.demo.data.local.entidades.FrecuenciaCardiacaEntity
         RegistroSuenoEntity::class,
         RegistroActividadEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 

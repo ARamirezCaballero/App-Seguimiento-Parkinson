@@ -13,7 +13,8 @@ fun RegistroActividadEntity.toDomain() = RegistroActividad(
     pasos = pasos,
     distanciaMetros = distanciaMetros,
     fechaHora = Instant.ofEpochMilli(fechaHora).atZone(ZoneId.systemDefault()).toLocalDateTime(),
-    fuente = fuente
+    fuente = fuente,
+    healthRecordId = healthRecordId
 )
 
 fun RegistroActividad.toEntity() = RegistroActividadEntity(
@@ -24,5 +25,6 @@ fun RegistroActividad.toEntity() = RegistroActividadEntity(
     pasos = pasos,
     distanciaMetros = distanciaMetros,
     fechaHora = fechaHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-    fuente = fuente
+    fuente = fuente,
+    healthRecordId = healthRecordId
 )

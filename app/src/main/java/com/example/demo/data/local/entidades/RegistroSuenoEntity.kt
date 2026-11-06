@@ -1,7 +1,12 @@
 package com.example.demo.data.local.entidades
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
-@Entity(tableName = "registros_sueno")
+
+@Entity(
+    tableName = "registros_sueno",
+    indices = [Index(value = ["healthRecordId"], unique = true)]
+)
 data class RegistroSuenoEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
@@ -14,5 +19,6 @@ data class RegistroSuenoEntity(
     val minutosREM: Int,
     val minutosDespierto: Int,
     val fechaHora: Long,
-    val fuente: String
+    val fuente: String,
+    val healthRecordId: String? = null
 )

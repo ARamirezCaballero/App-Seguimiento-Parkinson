@@ -10,6 +10,7 @@ data class RegistroActividad(
     val pasos: Int,
     val distanciaMetros: Double,
     val fechaHora: LocalDateTime,
-    val fuente: String
+    val fuente: String,
+    val healthRecordId: String? = null
 ) {
 }

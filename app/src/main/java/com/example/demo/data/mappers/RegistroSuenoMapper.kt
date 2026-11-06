@@ -16,7 +16,8 @@ fun RegistroSuenoEntity.toDomain() = RegistroSueno(
     minutosREM = minutosREM,
     minutosDespierto = minutosDespierto,
     fechaHora = Instant.ofEpochMilli(fechaHora).atZone(ZoneId.systemDefault()).toLocalDateTime(),
-    fuente = fuente
+    fuente = fuente,
+    healthRecordId = healthRecordId
 )
 
 fun RegistroSueno.toEntity() = RegistroSuenoEntity(
@@ -30,5 +31,6 @@ fun RegistroSueno.toEntity() = RegistroSuenoEntity(
     minutosREM = minutosREM,
     minutosDespierto = minutosDespierto,
     fechaHora = fechaHora.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-    fuente = fuente
+    fuente = fuente,
+    healthRecordId = healthRecordId
 )
