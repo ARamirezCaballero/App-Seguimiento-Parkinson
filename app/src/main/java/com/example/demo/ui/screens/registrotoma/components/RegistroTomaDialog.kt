@@ -51,6 +51,7 @@ fun RegistroTomaDialog(
     onHoraChanged: (Int) -> Unit,
     onMinutoChanged: (Int) -> Unit,
     onConfirmarClick: () -> Unit,
+    onFinalizarTratamientoClick: () -> Unit,
     onCancelarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -69,6 +70,7 @@ fun RegistroTomaDialog(
             onHoraChanged = onHoraChanged,
             onMinutoChanged = onMinutoChanged,
             onConfirmarClick = onConfirmarClick,
+            onFinalizarTratamientoClick = onFinalizarTratamientoClick,
             onCancelarClick = onCancelarClick,
             modifier = modifier
         )
@@ -83,6 +85,7 @@ fun RegistroTomaDialogContent(
     onHoraChanged: (Int) -> Unit,
     onMinutoChanged: (Int) -> Unit,
     onConfirmarClick: () -> Unit,
+    onFinalizarTratamientoClick: () -> Unit,
     onCancelarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -178,7 +181,7 @@ fun RegistroTomaDialogContent(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Botones verticales: Confirmar (arriba) y Cancelar (abajo) con al menos 56dp (14mm) de alto
+            // Botones verticales: Confirmar (arriba), Finalizar Tratamiento (centro) y Cancelar (abajo) con al menos 56dp (14mm) de alto
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -195,9 +198,28 @@ fun RegistroTomaDialogContent(
                     )
                 ) {
                     Text(
-                        text = "Confirmar",
+                        text = "Confirmar Toma",
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
+                        fontFamily = FontFamily.Default
+                    )
+                }
+
+                Button(
+                    onClick = onFinalizarTratamientoClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 56.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFEA6B66),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(
+                        text = "Finalizar Tratamiento",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
                         fontFamily = FontFamily.Default
                     )
                 }
@@ -235,6 +257,102 @@ private fun dialogTextFieldColors() = OutlinedTextFieldDefaults.colors(
     unfocusedTextColor = Color.Black
 )
 
+@Composable
+fun ConfirmacionFinalizarTratamientoDialog(
+    titulo: String,
+    mensaje: String,
+    textoConfirmar: String,
+    textoCancelar: String,
+    onConfirmar: () -> Unit,
+    onCancelar: () -> Unit,
+    colorBotonConfirmar: Color = Color(0xFFEA6B66)
+) {
+    Dialog(
+        onDismissRequest = onCancelar,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true,
+            usePlatformDefaultWidth = false
+        )
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+            color = Color.White
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = titulo,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF4C0099),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Text(
+                    text = mensaje,
+                    fontSize = 15.sp,
+                    color = Color.DarkGray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Button(
+                        onClick = onConfirmar,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = 56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorBotonConfirmar,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(
+                            text = textoConfirmar,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = Color.White
+                        )
+                    }
+
+                    Button(
+                        onClick = onCancelar,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = 56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFE0E0E0),
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Text(
+                            text = textoCancelar,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = Color.Black
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun RegistroTomaDialogPreview() {
@@ -271,6 +389,7 @@ fun RegistroTomaDialogPreview() {
             onHoraChanged = {},
             onMinutoChanged = {},
             onConfirmarClick = {},
+            onFinalizarTratamientoClick = {},
             onCancelarClick = {}
         )
     }

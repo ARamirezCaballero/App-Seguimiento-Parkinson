@@ -22,5 +22,7 @@ data class RegistroTomaUiState(
     val minutoRegistrado: Int = 0,
     val isSaving: Boolean = false,
     val mensajeError: String? = null,
-    val mensajeExito: String? = null
+    val mensajeExito: String? = null,
+    val showFirstFinalizarConfirmation: Boolean = false,
+    val showSecondFinalizarConfirmation: Boolean = false
 )

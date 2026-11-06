@@ -83,8 +83,31 @@ fun RegistroTomaScreen(
                 onHoraChanged = viewModel::onHoraRegistradaChanged,
                 onMinutoChanged = viewModel::onMinutoRegistradoChanged,
                 onConfirmarClick = viewModel::confirmarToma,
+                onFinalizarTratamientoClick = viewModel::onIniciarFinalizarTratamiento,
                 onCancelarClick = viewModel::onDismissDialog
             )
+
+            if (uiState.showFirstFinalizarConfirmation) {
+                com.example.demo.ui.screens.registrotoma.components.ConfirmacionFinalizarTratamientoDialog(
+                    titulo = "Finalizar Tratamiento",
+                    mensaje = "¿Deseas finalizar el tratamiento de ${item.medicacion.nombreComercial}? Ya no se van a poder hacer registros de esta medicación.",
+                    textoConfirmar = "Continuar",
+                    textoCancelar = "Cancelar",
+                    onConfirmar = viewModel::onConfirmarPrimeraEtapaFinalizar,
+                    onCancelar = viewModel::onCancelarFinalizarTratamiento
+                )
+            }
+
+            if (uiState.showSecondFinalizarConfirmation) {
+                com.example.demo.ui.screens.registrotoma.components.ConfirmacionFinalizarTratamientoDialog(
+                    titulo = "Confirmación Definitiva",
+                    mensaje = "¿Estás completamente seguro/a de finalizar el tratamiento de ${item.medicacion.nombreComercial}? La pauta pasará a estar inactiva y ya no aparecerá en la pantalla de registro de tomas. Sus registros anteriores se conservarán en el historial.",
+                    textoConfirmar = "Sí, Finalizar Tratamiento",
+                    textoCancelar = "Volver",
+                    onConfirmar = viewModel::onConfirmarSegundaEtapaFinalizar,
+                    onCancelar = viewModel::onCancelarFinalizarTratamiento
+                )
+            }
         }
     }
 }

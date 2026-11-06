@@ -38,12 +38,17 @@ class RegistroTomaViewModel @Inject constructor(
             try {
                 val pacienteId = 1L
                 val medicamentos = gestionarMedicacionUseCase.consultarMedicamentos(pacienteId)
-                val items = medicamentos.map { med ->
+                val items = medicamentos.mapNotNull { med ->
                     val pautas = gestionarPautaMedicacionUseCase.consultarPautas(med.id)
-                    MedicamentoConPautaItem(
-                        medicacion = med,
-                        pauta = pautas.firstOrNull { it.activa } ?: pautas.firstOrNull()
-                    )
+                    val pautaActiva = pautas.firstOrNull { it.activa }
+                    if (pautaActiva != null) {
+                        MedicamentoConPautaItem(
+                            medicacion = med,
+                            pauta = pautaActiva
+                        )
+                    } else {
+                        null
+                    }
                 }
 
                 _uiState.update {
@@ -100,7 +105,69 @@ class RegistroTomaViewModel @Inject constructor(
     }
 
     fun onDismissDialog() {
-        _uiState.update { it.copy(selectedMedicamento = null, fechaHoraProgramadaSugerida = null) }
+        _uiState.update {
+            it.copy(
+                selectedMedicamento = null,
+                fechaHoraProgramadaSugerida = null,
+                showFirstFinalizarConfirmation = false,
+                showSecondFinalizarConfirmation = false
+            )
+        }
+    }
+
+    fun onIniciarFinalizarTratamiento() {
+        _uiState.update { it.copy(showFirstFinalizarConfirmation = true) }
+    }
+
+    fun onConfirmarPrimeraEtapaFinalizar() {
+        _uiState.update {
+            it.copy(
+                showFirstFinalizarConfirmation = false,
+                showSecondFinalizarConfirmation = true
+            )
+        }
+    }
+
+    fun onCancelarFinalizarTratamiento() {
+        _uiState.update {
+            it.copy(
+                showFirstFinalizarConfirmation = false,
+                showSecondFinalizarConfirmation = false
+            )
+        }
+    }
+
+    fun onConfirmarSegundaEtapaFinalizar() {
+        val currentState = _uiState.value
+        val selectedItem = currentState.selectedMedicamento ?: return
+        val pautaId = selectedItem.pauta?.id ?: return
+        if (currentState.isSaving) return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _uiState.update { it.copy(isSaving = true, mensajeError = null, mensajeExito = null) }
+            try {
+                gestionarPautaMedicacionUseCase.desactivarPauta(pautaId)
+
+                _uiState.update {
+                    it.copy(
+                        isSaving = false,
+                        selectedMedicamento = null,
+                        fechaHoraProgramadaSugerida = null,
+                        showFirstFinalizarConfirmation = false,
+                        showSecondFinalizarConfirmation = false,
+                        mensajeExito = "Tratamiento de ${selectedItem.medicacion.nombreComercial} finalizado correctamente"
+                    )
+                }
+                cargarMedicamentos()
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isSaving = false,
+                        mensajeError = "Error al finalizar el tratamiento: ${e.message}"
+                    )
+                }
+            }
+        }
     }
 
     fun confirmarToma() {
