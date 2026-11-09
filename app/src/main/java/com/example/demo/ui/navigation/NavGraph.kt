@@ -94,7 +94,9 @@ fun NavGraph(
         }
 
         composable(Screen.Evolucion.route) {
-            EvolucionScreen()
+            EvolucionScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.Informe.route) {
