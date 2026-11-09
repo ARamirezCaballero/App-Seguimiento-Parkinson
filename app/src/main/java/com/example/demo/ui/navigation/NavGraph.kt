@@ -98,7 +98,9 @@ fun NavGraph(
         }
 
         composable(Screen.Informe.route) {
-            InformeScreen()
+            InformeScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.Historial.route) {
