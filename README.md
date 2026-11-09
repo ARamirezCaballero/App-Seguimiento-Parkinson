@@ -1,4 +1,4 @@
-Link de descarga de la apk: https://drive.google.com/file/d/1UpU-ZLLqOVCdJ1BbAX7QdUj_pXe1VFvP/view?usp=sharing
+Link de descarga de la apk: [[https://drive.google.com/file/d/1UpU-ZLLqOVCdJ1BbAX7QdUj_pXe1VFvP/view?usp=sharing](https://drive.google.com/file/d/1cKfgg7ugOouplz6xlsvOaHRXBSBAPKM1/view?usp=sharing)](https://drive.google.com/file/d/1cKfgg7ugOouplz6xlsvOaHRXBSBAPKM1/view?usp=drive_link)
 
 Video de la demo: https://drive.google.com/file/d/19uNlhzlIGez2Vpv6J18eyjtLW7FzjB8-/view?usp=sharing
 
@@ -7,6 +7,11 @@ Intructivo para correr la demo en un emulador:
 Requisitos previos:
 - Sistema Operativo: Android 11.0 (API 30) o superior.
 - Archivos requeridos: demo_parkinson.apk
+- Health Connect con datos o Health Connect Toolbox.
+
+En caso de tener Health connect Toolbox:
+1. Hacer click en "Request All Permissions".
+2. Cargar datos de pasos, distancia, sesiones de sueño y frecuencia cardiaca.
   
 1. Descargar la apk en un dispositivo Android o emulador.
 2. Presione el archivo .apk descargado para iniciar la instalación
