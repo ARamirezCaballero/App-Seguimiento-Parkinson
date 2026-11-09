@@ -27,15 +27,16 @@ class GenerarInformePdfUseCase @Inject constructor(
         fechaFin: LocalDate
     ): InformeSeguimiento {
         val inicioEpoch = fechaInicio.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-        val finEpoch = fechaFin.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val finEpoch = fechaFin.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli() - 1L
 
         // Datos del paciente
         val paciente = pacienteRepository.obtenerPaciente()
+        val targetPacienteId = if (paciente != null && paciente.id != 0L) paciente.id else (if (pacienteId > 0) pacienteId else 1L)
         val nombreCompleto = if (paciente != null) "${paciente.nombre} ${paciente.apellido}".trim() else "Sin información suficiente"
         val fechaDiag = paciente?.fechaDiagnostico?.toString() ?: "Sin información suficiente"
 
         // Adherencia Farmacologica
-        val tomas = registroMedicacionRepository.consultarTomasPorPeriodo(pacienteId, inicioEpoch, finEpoch)
+        val tomas = registroMedicacionRepository.consultarTomasPorPeriodo(targetPacienteId, inicioEpoch, finEpoch)
         val adherenciaResumen = if (tomas.isEmpty()) {
             ResumenAdherencia(0, 0, 0, 0.0, "Sin información suficiente")
         } else {
@@ -59,8 +60,8 @@ class GenerarInformePdfUseCase @Inject constructor(
         }
 
         // Estado Motor y sintomas
-        val estadosMotores = registroEstadoMotorRepository.consultarIntervalosPorPeriodo(pacienteId, inicioEpoch, finEpoch)
-        val sintomas = sintomaRepository.consultarSintomasPorPeriodo(pacienteId, inicioEpoch, finEpoch)
+        val estadosMotores = registroEstadoMotorRepository.consultarIntervalosPorPeriodo(targetPacienteId, inicioEpoch, finEpoch)
+        val sintomas = sintomaRepository.consultarSintomasPorPeriodo(targetPacienteId, inicioEpoch, finEpoch)
 
         var distribucionMotor = emptyMap<com.example.demo.dominio.model.enums.EstadoMotor, Double>()
         var duracionMap = emptyMap<com.example.demo.dominio.model.enums.EstadoMotor, Long>()
@@ -126,7 +127,7 @@ class GenerarInformePdfUseCase @Inject constructor(
         )
 
         // seccion de sueño
-        val sesionesSueno = healthDataRepository.obtenerDatosSueno(pacienteId, inicioEpoch, finEpoch)
+        val sesionesSueno = healthDataRepository.obtenerDatosSueno(targetPacienteId, inicioEpoch, finEpoch)
         val resumenSueno = if (sesionesSueno.isEmpty()) {
             ResumenSuenoInforme(0.0, 0.0, 0.0, 0, "Sin información suficiente")
         } else {
