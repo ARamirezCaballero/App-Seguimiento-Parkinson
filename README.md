@@ -1,4 +1,4 @@
-Link de descarga de la apk: [[https://drive.google.com/file/d/1UpU-ZLLqOVCdJ1BbAX7QdUj_pXe1VFvP/view?usp=sharing](https://drive.google.com/file/d/1cKfgg7ugOouplz6xlsvOaHRXBSBAPKM1/view?usp=sharing)](https://drive.google.com/file/d/1cKfgg7ugOouplz6xlsvOaHRXBSBAPKM1/view?usp=drive_link)
+Link de descarga de la apk: https://drive.google.com/file/d/1cKfgg7ugOouplz6xlsvOaHRXBSBAPKM1/view?usp=drive_link
 
 Video de la demo: https://drive.google.com/file/d/19uNlhzlIGez2Vpv6J18eyjtLW7FzjB8-/view?usp=sharing
 
