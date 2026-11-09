@@ -1,5 +1,7 @@
 Link de descarga de la apk: https://drive.google.com/file/d/1UpU-ZLLqOVCdJ1BbAX7QdUj_pXe1VFvP/view?usp=sharing
 
+Video de la demo: https://drive.google.com/file/d/19uNlhzlIGez2Vpv6J18eyjtLW7FzjB8-/view?usp=sharing
+
 Intructivo para correr la demo en un emulador:
 
 Requisitos previos:
