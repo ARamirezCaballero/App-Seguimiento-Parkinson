@@ -12,7 +12,8 @@ Requisitos previos:
 En caso de tener Health connect Toolbox:
 1. Hacer click en "Request All Permissions".
 2. Cargar datos de pasos, distancia, sesiones de sueño y frecuencia cardiaca.
-  
+
+Pasos para la instalación y configuración de la apk
 1. Descargar la apk en un dispositivo Android o emulador.
 2. Presione el archivo .apk descargado para iniciar la instalación
 3. Si el sistema Android muestra el mensaje "Por seguridad, tu teléfono no tiene permitido instalar apps desconocidas de esta fuente":
